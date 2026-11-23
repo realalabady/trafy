@@ -1,213 +1,164 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useStore } from "../../store/useStore";
 import "./Header.css";
 
-// بلا أيقونات: كل إجراء يحمل اسمه. انظر BRAND.md §5.
-const Header: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const categoriesRef = useRef<HTMLLIElement>(null);
-  const { cart, user, searchQuery, setSearchQuery, categories, storeInfo } =
-    useStore();
-  const navigate = useNavigate();
+const NAV = [
+  { to: "/products", label: "الأقمشة" },
+  { to: "/products?search=صوف", label: "الصوف" },
+  { to: "/products?search=قطن", label: "القطن" },
+  { to: "/products?featured=true", label: "المختارة" },
+  { to: "/about", label: "عن ترفي" },
+];
 
-  const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
+/**
+ * شريط واحد فقط. كان ثلاثة (إعلان علوي + صف بحث + صف تنقل) وهو ثقل
+ * بلا مقابل: الزائر يريد القماش، لا ثلاثة صفوف قبله.
+ * البحث صار طبقة تُفتح عند الطلب، لا حقلاً دائماً.
+ */
+const Header: React.FC = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { cart, user, searchQuery, setSearchQuery, storeInfo } = useStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const reduce = useReducedMotion();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const cartCount = cart.reduce((n, item) => n + item.quantity, 0);
   const storeName = storeInfo.storeName || "ترفي";
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-      setMobileMenuOpen(false);
-    }
-  };
+  useEffect(() => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        categoriesRef.current &&
-        !categoriesRef.current.contains(event.target as Node)
-      ) {
-        setCategoriesOpen(false);
-      }
+    if (!searchOpen) return;
+    inputRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSearchOpen(false);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [searchOpen]);
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    setSearchOpen(false);
+  };
 
   return (
     <header className="header">
-      {/* شريط علوي: مواصفة لا إعلان */}
-      <div className="header-top">
-        <div className="container header-top-content">
-          <span className="meta header-promo">
-            شحن مجاني فوق ٢٠٠ ر.س · توصيل لكل المملكة
-          </span>
-          <div className="header-top-links">
-            {storeInfo.storePhone && (
-              <a href={`tel:${storeInfo.storePhone}`} className="meta">
-                {storeInfo.storePhone}
-              </a>
-            )}
-            {user ? (
-              <Link
-                to={user.role === "admin" ? "/dashboard" : "/account"}
-                className="meta"
-              >
-                {user.role === "admin" ? "لوحة التحكم" : "حسابي"}
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" className="meta">
-                  دخول
-                </Link>
-                <Link to="/register" className="meta">
-                  حساب جديد
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      <div className="container bar">
+        <Link to="/" className="brand" aria-label={storeName}>
+          <span className="brand-mark display">{storeName}</span>
+        </Link>
 
-      {/* الصف الرئيسي */}
-      <div className="header-main">
-        <div className="container header-main-content">
-          <button
-            className="menu-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? "إغلاق" : "القائمة"}
+        <nav className="bar-nav" aria-label="الأقسام">
+          {NAV.map((item) => (
+            <Link key={item.label} to={item.to} className="bar-link">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="bar-actions">
+          <button className="bar-link" onClick={() => setSearchOpen(true)}>
+            بحث
           </button>
-
-          <Link to="/" className="logo" aria-label={storeName}>
-            <span className="logo-text display">{storeName}</span>
-            <span className="logo-sub meta">أقمشة ثياب رجالية</span>
+          <Link to={user ? "/account" : "/login"} className="bar-link">
+            {user ? "حسابي" : "دخول"}
           </Link>
-
-          <form className="search-bar" onSubmit={handleSearch} role="search">
-            <input
-              type="search"
-              name="search"
-              aria-label="ابحث في الأقمشة"
-              autoComplete="off"
-              placeholder="ابحث باسم القماش أو الوزن أو الوقفة"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="search-submit meta">
-              بحث
-            </button>
-          </form>
-
-          <div className="header-actions">
-            <Link to="/cart" className="action-link">
-              السلة
-              <span className="action-count">{cartCount}</span>
-            </Link>
-            <Link to={user ? "/account" : "/login"} className="action-link">
-              {user ? "حسابي" : "دخول"}
-            </Link>
-          </div>
+          <Link to="/cart" className="bar-cart">
+            السلة
+            {cartCount > 0 && <span className="bar-count">{cartCount}</span>}
+          </Link>
+          <button
+            className="bar-burger"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? "إغلاق" : "القائمة"}
+          </button>
         </div>
       </div>
 
-      {/* التنقل */}
-      <nav className={`nav ${mobileMenuOpen ? "nav-open" : ""}`}>
-        <div className="container">
-          <ul className="nav-menu">
-            <li className="nav-item">
-              <Link
-                to="/"
-                className="nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                الرئيسية
-              </Link>
-            </li>
-            <li
-              className={`nav-item has-dropdown ${categoriesOpen ? "open" : ""}`}
-              ref={categoriesRef}
+      {/* طبقة البحث */}
+      <AnimatePresence mode="wait">
+        {searchOpen && (
+          <motion.div
+            key="search"
+            className="search-layer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0.1 : 0.2 }}
+          >
+            <motion.div
+              className="search-panel"
+              initial={{ y: reduce ? 0 : -18 }}
+              animate={{ y: 0 }}
+              exit={{ y: reduce ? 0 : -18 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             >
-              <button
-                type="button"
-                className="nav-link nav-dropdown-toggle"
-                aria-expanded={categoriesOpen}
-                aria-haspopup="true"
-                onClick={() => setCategoriesOpen((o) => !o)}
-                onKeyDown={(e) => {
-                  if (e.key === "Escape") setCategoriesOpen(false);
-                }}
-              >
-                الأقمشة
-              </button>
-              <div className="dropdown-menu">
-                {categories.length > 0 ? (
-                  categories.map((cat) => (
-                    <Link
-                      key={cat.id}
-                      to={`/products?category=${cat.id}`}
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        setCategoriesOpen(false);
-                      }}
-                    >
-                      {cat.name}
-                    </Link>
-                  ))
-                ) : (
-                  <span className="dropdown-empty">لا توجد تصنيفات بعد</span>
-                )}
-              </div>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/products?featured=true"
-                className="nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                المختارة
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/products?new=true"
-                className="nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                وصل حديثاً
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/about"
-                className="nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                عن ترفي
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/contact"
-                className="nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+              <form onSubmit={submitSearch} role="search" className="container">
+                <input
+                  ref={inputRef}
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="اكتب اسم القماش أو الوزن أو الوقفة"
+                  aria-label="ابحث في الأقمشة"
+                />
+                <button type="submit" className="btn btn-primary">
+                  ابحث
+                </button>
+                <button
+                  type="button"
+                  className="search-close"
+                  onClick={() => setSearchOpen(false)}
+                >
+                  إغلاق
+                </button>
+              </form>
+            </motion.div>
+            <button
+              className="search-scrim"
+              aria-label="إغلاق البحث"
+              onClick={() => setSearchOpen(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* قائمة الجوال */}
+      <AnimatePresence mode="wait">
+        {menuOpen && (
+          <motion.nav
+            key="menu"
+            className="drawer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: reduce ? 0.1 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="container drawer-inner">
+              {NAV.map((item) => (
+                <Link key={item.label} to={item.to} className="drawer-link">
+                  {item.label}
+                </Link>
+              ))}
+              <Link to="/contact" className="drawer-link">
                 تواصل
               </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {mobileMenuOpen && (
-        <div
-          className="mobile-overlay"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

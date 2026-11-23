@@ -4,12 +4,8 @@ import { useStore } from "../../store/useStore";
 import "./Footer.css";
 
 // بلا أيقونات: الخدمات تُقال بالكلمة والرقم، لا بالرمز.
-const SERVICE = [
-  { k: "الشحن", v: "٢–٥ أيام عمل لكل مناطق المملكة" },
-  { k: "الشحن المجاني", v: "على الطلبات فوق ٢٠٠ ر.س" },
-  { k: "الاسترجاع", v: "خلال ٧ أيام على الطاقة غير المقصوصة" },
-  { k: "الدفع", v: "مدى · أبل باي · تحويل بنكي · تقسيط" },
-];
+const SERVICE =
+  "شحن ٢ إلى ٥ أيام لكل المملكة، ومجاني فوق ٢٠٠ ر.س. استرجاع خلال ٧ أيام على الطاقة غير المقصوصة.";
 
 const FABRIC_LINKS = [
   { to: "/products?search=صوف", label: "الأصواف الشتوية" },
@@ -25,18 +21,10 @@ const Footer: React.FC = () => {
   const storeName = storeInfo.storeName || "ترفي";
 
   return (
-    <footer className="footer">
-      {/* شريط الخدمة: مواصفة لا وعود */}
+    <footer className="footer band">
       <div className="footer-service">
         <div className="container">
-          <dl className="service-grid">
-            {SERVICE.map((s) => (
-              <div key={s.k} className="service-item">
-                <dt className="meta">{s.k}</dt>
-                <dd>{s.v}</dd>
-              </div>
-            ))}
-          </dl>
+          <p>{SERVICE}</p>
         </div>
       </div>
 

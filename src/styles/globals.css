@@ -5,72 +5,89 @@
    ============================================================ */
 
 :root {
-  /* --- القماش والحبر --- */
-  --bone: #f6f3ec;
-  --bone-deep: #efeade;
+  /* ============================================================
+     لوحة "الغابة": أخضر عميق + عظمي + كهرماني.
+     تُركت لوحة البيج/النحاس/البنّي عمداً — هي اللوحة الافتراضية
+     التي يصل إليها كل متجر "فاخر"، وتجعل العلامة بلا وجه.
+     لهجة واحدة فقط (الكهرماني) تتكرر في الصفحة كلها.
+     ============================================================ */
+
+  /* الأسطح الفاتحة */
+  --bone: #f1eee6;
+  --bone-deep: #e7e3d8;
   --paper: #ffffff;
-  --ink: #1b1917;
-  --ink-soft: #6b6459;
-  --ink-faint: #9c9486;
-  --line: #e3ded3;
-  --line-soft: #ece7dd;
 
-  /* --- اللهجات --- */
-  --oud: #4a3a2c;
-  --oud-deep: #33281e;
-  --brass: #a8804a;
-  --indigo: #2c3a47;
-  --sale: #8c2f2a;
-  --ok: #4f6b4a;
+  /* الأسطح الداكنة — أقسام كاملة، لا مجرد نص */
+  --forest: #16281f;
+  --forest-deep: #0d1813;
+  --forest-soft: #273b31;
 
-  /* أسماء قديمة تستعملها لوحة التحكم — مربوطة بالنظام الجديد */
+  /* الحبر */
+  --ink: #1a1f1b;
+  --ink-soft: #596056;
+  --ink-faint: #8d948b;
+  --line: #dcd8cc;
+  --line-soft: #e8e4da;
+
+  /* اللهجة الوحيدة */
+  --amber: #c8761a;
+  --amber-soft: #e9b97a;
+
+  /* الحالات */
+  --sale: #9b3124;
+  --ok: #3f6b4a;
+
+  /* أسماء قديمة تستعملها لوحة التحكم وبقية الصفحات */
   --bg: var(--bone);
   --surface: var(--paper);
-  --mid: #b5ab9b;
-  --primary: var(--oud);
-  --primary-dark: var(--oud-deep);
-  --accent-blue: var(--indigo);
+  --mid: #a9a697;
+  --primary: var(--forest);
+  --primary-dark: var(--forest-deep);
+  --oud: var(--forest);
+  --oud-deep: var(--forest-deep);
+  --brass: var(--amber);
+  --indigo: var(--forest-soft);
+  --accent-blue: var(--forest-soft);
   --accent-green: var(--ok);
   --danger: var(--sale);
-  --secondary: var(--indigo);
+  --secondary: var(--forest-soft);
   --success: var(--ok);
-  --warning: var(--brass);
+  --warning: var(--amber);
   --dark: var(--ink);
   --light: var(--bone);
   --gray: var(--ink-soft);
   --border: var(--line);
 
-  /* --- الخطوط --- */
+  /* الخطوط */
   --display: "Amiri", "Noto Naskh Arabic", Georgia, serif;
   --sans: "IBM Plex Sans Arabic", "SF Pro Display", "Helvetica Neue", sans-serif;
   --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
 
-  /* --- الإيقاع --- */
-  --measure: 1280px;
+  /* الإيقاع */
+  --measure: 1320px;
   --gutter: 24px;
-  --section: 96px;
+  --section: 104px;
 
-  /* --- الزوايا: حادة ومنضبطة --- */
-  --radius-sm: 3px;
-  --radius: 5px;
-  --radius-lg: 8px;
+  /* زوايا: نظام واحد */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 14px;
 
-  /* --- الظل: شبه معدوم --- */
-  --shadow-sm: 0 1px 2px rgba(27, 25, 23, 0.03);
-  --shadow-md: 0 2px 10px rgba(27, 25, 23, 0.05);
-  --shadow-lg: 0 6px 28px rgba(27, 25, 23, 0.06);
+  /* ظلال مائلة للون الخلفية، بلا أسود صافٍ */
+  --shadow-sm: 0 1px 2px rgba(22, 40, 31, 0.04);
+  --shadow-md: 0 4px 18px rgba(22, 40, 31, 0.07);
+  --shadow-lg: 0 18px 50px rgba(22, 40, 31, 0.1);
   --shadow-primary: var(--shadow-md);
   --shadow-success: var(--shadow-md);
   --shadow-danger: var(--shadow-md);
 
-  /* أسماء تدرّجات قديمة — مسطّحة عمداً */
-  --gradient-primary: var(--oud);
+  --gradient-primary: var(--forest);
   --gradient-success: var(--ok);
   --gradient-danger: var(--sale);
-  --gradient-gold: var(--brass);
+  --gradient-gold: var(--amber);
   --gradient-dark: var(--ink);
 
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -727,4 +744,57 @@ textarea {
 .rail > * {
   scroll-snap-align: start;
   flex: 0 0 auto;
+}
+
+/* ============================================
+   الأقسام الداكنة — تباين على مستوى القسم
+   تقلب الرموز بدل تلوين كل عنصر يدوياً، فتبقى
+   المكوّنات نفسها تعمل داخل الفاتح والداكن.
+   ============================================ */
+.band {
+  background: var(--forest);
+  color: var(--bone);
+  --ink: #f1eee6;
+  --ink-soft: #b3bdb4;
+  --line: rgba(241, 238, 230, 0.16);
+  --line-soft: rgba(241, 238, 230, 0.1);
+  --paper: var(--forest-soft);
+  --bone: #16281f;
+  --bone-deep: #0d1813;
+  --mid: #7c8a7f;
+}
+
+.band h1,
+.band h2,
+.band h3 {
+  color: #f1eee6;
+}
+
+.band .btn-primary {
+  background: var(--amber);
+  color: #16281f;
+}
+
+.band .btn-primary:hover {
+  background: #e08a28;
+}
+
+.band .btn-secondary {
+  border-color: rgba(241, 238, 230, 0.32);
+  color: #f1eee6;
+}
+
+.band .btn-secondary:hover {
+  border-color: #f1eee6;
+}
+
+/* شريط الحافة الكاملة */
+.bleed {
+  width: 100vw;
+  margin-inline-start: 50%;
+  transform: translateX(50%);
+}
+
+[dir="rtl"] .bleed {
+  transform: translateX(50%);
 }

@@ -1,46 +1,46 @@
-/* ترفي — الصفحة الرئيسية */
+/* ترفي — الرئيسية. خمسة أقسام تتناوب فاتح/داكن. */
 
 .home {
   overflow-x: hidden;
 }
 
 /* ============================================
-   الواجهة
+   ١. الواجهة (داكنة)
    ============================================ */
 .hero {
-  padding-block: clamp(48px, 7vw, 104px) clamp(56px, 8vw, 112px);
+  padding-block: clamp(40px, 6vw, 80px) 0;
+  overflow: hidden;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(32px, 6vw, 80px);
-  align-items: center;
+  grid-template-columns: 1fr 0.92fr;
+  gap: clamp(28px, 5vw, 72px);
+  align-items: end;
 }
 
 .hero-text {
-  max-width: 34ch;
+  padding-bottom: clamp(48px, 7vw, 96px);
 }
 
 .hero-eyebrow {
   display: block;
-  color: var(--brass);
-  margin-bottom: 22px;
+  color: var(--amber);
+  margin-bottom: 20px;
 }
 
-/* حاوية عريضة + حجم محسوب: سطران، لا جدار نصّي */
 .hero-title {
-  font-size: clamp(2.75rem, 7.2vw, 5.25rem);
-  line-height: 1.04;
-  margin-bottom: 24px;
-  max-width: 14ch;
+  font-size: clamp(3rem, 8.2vw, 6.5rem);
+  line-height: 1.02;
+  color: #f1eee6;
+  margin-bottom: 20px;
 }
 
 .hero-lede {
-  font-size: clamp(15px, 1.5vw, 17px);
-  line-height: 1.9;
-  color: var(--ink-soft);
-  max-width: 42ch;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.85;
+  color: #b3bdb4;
+  max-width: 38ch;
 }
 
 .hero-buttons {
@@ -50,261 +50,253 @@
   margin-top: 34px;
 }
 
-.hero-figure {
-  margin: 0;
+.hero-media {
+  position: relative;
+  align-self: end;
 }
 
-.hero-photo {
+.hero-media img {
+  width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
-  border-radius: var(--radius-lg);
-}
-
-.hero-caption {
-  display: block;
-  margin-top: 12px;
-  color: var(--ink-soft);
+  object-fit: cover;
+  object-position: 50% 18%;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  filter: saturate(0.88);
 }
 
 /* ============================================
-   محور الوقفة — شبكة بلا فراغات، فواصل 1px
+   ٢. الخامات (فاتحة)
    ============================================ */
-.stance-grid {
+.families-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.families-head h2 {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+}
+
+.families-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: dense;
+  gap: 18px;
+}
+
+.tile-wide {
+  grid-column: span 2;
+}
+
+.tile-link {
+  display: block;
+  height: 100%;
+}
+
+.tile-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bone-deep);
+  aspect-ratio: 1 / 1;
+}
+
+.tile-wide .tile-photo {
+  aspect-ratio: 16 / 9;
+}
+
+.tile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9);
+  transition: transform 1.1s var(--ease);
+}
+
+.tile-link:hover .tile-photo img {
+  transform: scale(1.05);
+}
+
+.tile-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.tile-label {
+  font-size: 20px;
+  color: var(--ink);
+  transition: color 200ms var(--ease);
+}
+
+.tile-wide .tile-label {
+  font-size: 28px;
+}
+
+.tile-link:hover .tile-label {
+  color: var(--amber);
+}
+
+.tile-weight {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   ٣. الوقفة (داكنة)
+   ============================================ */
+.stance-title {
+  font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+  max-width: 20ch;
+  margin-bottom: 48px;
+}
+
+.stance-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-inline-start: 1px solid var(--line);
-  margin-top: 40px;
+  gap: 1px;
+  background: rgba(241, 238, 230, 0.14);
 }
 
-.stance-cell {
+.stance-item {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 26px 22px;
-  border-inline-end: 1px solid var(--line);
-  border-block: 1px solid var(--line);
-  background: transparent;
-  transition: background 240ms var(--ease);
+  gap: 10px;
+  padding: 30px 24px;
+  background: var(--forest);
+  height: 100%;
+  transition: background 300ms var(--ease);
 }
 
-.stance-cell:hover {
-  background: var(--paper);
+.stance-item:hover {
+  background: var(--forest-soft);
 }
 
 .stance-name {
-  font-size: 24px;
-  color: var(--ink);
+  font-size: 26px;
+  color: #f1eee6;
 }
 
 .stance-note {
   font-size: 13px;
   line-height: 1.7;
-  color: var(--ink-soft);
+  color: #94a297;
 }
 
 /* ============================================
-   عائلات القماش
+   ٥. الطاقة
    ============================================ */
-.family-grid {
+.roll {
+  padding-block: var(--section);
+}
+
+.roll-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.family-photo {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius);
-}
-
-.family-caption {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding-top: 12px;
-}
-
-.family-label {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.family-card:hover .family-label {
-  color: var(--oud);
-}
-
-/* ============================================
-   التصنيفات
-   ============================================ */
-.category-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.category-chip {
-  padding: 9px 18px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 14px;
-  color: var(--ink-soft);
-  transition: border-color 180ms var(--ease), color 180ms var(--ease);
-}
-
-.category-chip:hover {
-  border-color: var(--ink);
-  color: var(--ink);
-}
-
-/* ============================================
-   اللوحة التحريرية
-   ============================================ */
-.editorial {
-  position: relative;
-  margin-block: var(--section);
-  min-height: clamp(380px, 52vw, 560px);
-  display: flex;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(24px, 5vw, 64px);
   align-items: center;
 }
 
-.editorial-photo {
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-}
-
-.editorial-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to left,
-    rgba(27, 25, 23, 0.05),
-    rgba(27, 25, 23, 0.42)
-  );
-}
-
-.editorial-body {
-  position: relative;
-  z-index: 1;
+.roll-photo img {
   width: 100%;
-}
-
-.editorial-card {
-  background: var(--bone);
+  height: auto;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  object-position: 50% 35%;
   border-radius: var(--radius-lg);
-  padding: clamp(28px, 4vw, 44px);
-  max-width: 460px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
+  filter: saturate(0.88);
 }
 
-.editorial-card h2 {
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  line-height: 1.18;
+.roll-eyebrow {
+  display: block;
+  color: var(--amber);
+  margin-bottom: 16px;
 }
 
-.editorial-card p {
-  font-size: 15px;
-  line-height: 1.85;
+.roll-text h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.15;
+  margin-bottom: 16px;
+  max-width: 16ch;
+}
+
+.roll-text p {
+  font-size: 16px;
+  line-height: 1.9;
   color: var(--ink-soft);
+  max-width: 44ch;
+  margin-bottom: 28px;
 }
 
-/* ============================================
-   بلد النسج
-   ============================================ */
-.origin-row {
-  display: flex;
-  align-items: baseline;
-  gap: 40px;
-  padding-top: 32px;
-  flex-wrap: wrap;
-}
-
-.origin-label {
-  color: var(--brass);
-  flex: 0 0 auto;
-}
-
-.origin-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(24px, 5vw, 64px);
-}
-
-.origin-item {
-  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
-  color: var(--ink);
-  border-bottom: 1px solid transparent;
-  transition: border-color 220ms var(--ease), color 220ms var(--ease);
-  line-height: 1.3;
-}
-
-.origin-item:hover {
-  color: var(--oud);
-  border-color: var(--oud);
-}
-
-/* ============================================
-   ملاحظة هادئة بدل الحالة الفارغة الصاخبة
-   ============================================ */
 .quiet-note {
   font-size: 14px;
   color: var(--ink-soft);
-  padding: 32px 0;
+  padding: 36px 0;
   border-top: 1px solid var(--line-soft);
 }
 
 /* ============================================
    الاستجابة
    ============================================ */
-@media (max-width: 992px) {
+@media (max-width: 980px) {
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 0;
   }
 
   .hero-text {
-    max-width: none;
+    padding-bottom: 40px;
   }
 
-  .hero-title {
-    max-width: 16ch;
-  }
-
-  .hero-photo {
+  .hero-media img {
+    height: auto;
     aspect-ratio: 3 / 2;
+    object-position: 50% 22%;
   }
 
-  .family-grid {
+  .families-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .stance-grid {
+  .tile-wide {
+    grid-column: span 2;
+  }
+
+  .tile-wide .tile-photo {
+    aspect-ratio: 16 / 10;
+  }
+
+  .stance-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .roll-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
-  .family-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .stance-grid {
+  .families-grid {
     grid-template-columns: 1fr;
   }
 
-  .stance-cell {
-    padding: 20px 16px;
+  .tile-wide {
+    grid-column: span 1;
+  }
+
+  .stance-row {
+    grid-template-columns: 1fr;
   }
 
   .hero-buttons .btn {
     flex: 1 1 100%;
-  }
-
-  .editorial-card {
-    max-width: none;
   }
 }

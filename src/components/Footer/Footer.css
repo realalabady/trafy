@@ -1,9 +1,8 @@
 /* ترفي — التذييل */
 
 .footer {
-  margin-top: var(--section);
-  background: var(--bone);
-  border-top: 1px solid var(--line);
+  margin-top: 0;
+  background: var(--forest-deep);
 }
 
 /* ---------- شريط الخدمة ---------- */
@@ -11,22 +10,12 @@
   border-bottom: 1px solid var(--line);
 }
 
-.service-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-  padding-block: 36px;
-}
-
-.service-item dt {
-  margin-bottom: 6px;
-  color: var(--ink-soft);
-}
-
-.service-item dd {
+.footer-service p {
+  padding-block: 30px;
   font-size: 14px;
-  color: var(--ink);
-  line-height: 1.6;
+  line-height: 1.8;
+  color: #9faea3;
+  max-width: 70ch;
 }
 
 /* ---------- الجسم ---------- */
@@ -117,7 +106,7 @@
 }
 
 .footer-line {
-  color: var(--brass) !important;
+  color: var(--amber) !important;
 }
 
 @media (max-width: 992px) {
@@ -126,10 +115,6 @@
     gap: 40px;
   }
 
-  .service-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -138,9 +123,6 @@
     gap: 34px;
   }
 
-  .service-grid {
-    grid-template-columns: 1fr;
-  }
 
   .footer-bottom-content {
     flex-direction: column;
