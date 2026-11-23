@@ -1,11 +1,3 @@
-import {
-  Truck,
-  Clock,
-  MapPin,
-  CreditCard,
-  Package,
-  AlertCircle,
-} from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Legal.css";
 
@@ -20,7 +12,7 @@ const Shipping = () => {
       <div className="legal-content">
         <div className="legal-section">
           <h2>
-            <Truck size={22} /> نطاق التوصيل
+            <></> نطاق التوصيل
           </h2>
           <p>
             نوفر خدمة الشحن والتوصيل إلى جميع مناطق ومدن المملكة العربية
@@ -31,7 +23,7 @@ const Shipping = () => {
 
         <div className="legal-section">
           <h2>
-            <Clock size={22} /> مدة التوصيل
+            <></> مدة التوصيل
           </h2>
           <p>تختلف مدة التوصيل حسب موقعك:</p>
           <ul>
@@ -56,7 +48,7 @@ const Shipping = () => {
 
         <div className="legal-section">
           <h2>
-            <CreditCard size={22} /> رسوم الشحن
+            <></> رسوم الشحن
           </h2>
           <p>يتم احتساب رسوم الشحن كالتالي:</p>
           <ul>
@@ -66,13 +58,13 @@ const Shipping = () => {
             <li>
               <strong>25 ريال</strong> للطلبات أقل من 200 ريال
             </li>
-            <li>قد تختلف الرسوم للمنتجات كبيرة الحجم أو الوزن</li>
+            <li>قد تختلف الرسوم للأقمشة كبيرة الحجم أو الوزن</li>
           </ul>
         </div>
 
         <div className="legal-section">
           <h2>
-            <Package size={22} /> تتبع الشحنة
+            <></> تتبع الشحنة
           </h2>
           <p>
             بعد شحن طلبك، ستتلقى رقم تتبع عبر البريد الإلكتروني أو رسالة نصية.
@@ -83,7 +75,7 @@ const Shipping = () => {
 
         <div className="legal-section">
           <h2>
-            <MapPin size={22} /> عنوان التوصيل
+            <></> عنوان التوصيل
           </h2>
           <p>لضمان توصيل ناجح، يرجى التأكد من:</p>
           <ul>
@@ -95,7 +87,7 @@ const Shipping = () => {
 
         <div className="legal-section">
           <h2>
-            <AlertCircle size={22} /> ملاحظات مهمة
+            <></> ملاحظات مهمة
           </h2>
           <ul>
             <li>يرجى فحص المنتج عند الاستلام والتأكد من سلامة التغليف</li>

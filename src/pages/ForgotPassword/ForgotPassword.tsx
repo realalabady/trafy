@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, ArrowRight, Check } from "lucide-react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useStore } from "../../store/useStore";
@@ -61,7 +60,6 @@ const ForgotPassword: React.FC = () => {
                   margin: "0 auto 16px",
                 }}
               >
-                <Check size={30} color="#22c55e" />
               </div>
               <h2 style={{ marginBottom: 10, color: "var(--dark)" }}>
                 تم الإرسال!
@@ -92,7 +90,6 @@ const ForgotPassword: React.FC = () => {
                 <div className="form-group">
                   <label className="form-label">البريد الإلكتروني</label>
                   <div className="input-icon">
-                    <Mail size={20} />
                     <input
                       type="email"
                       className="form-input"
@@ -124,7 +121,6 @@ const ForgotPassword: React.FC = () => {
                       gap: 6,
                     }}
                   >
-                    <ArrowRight size={16} />
                     العودة لتسجيل الدخول
                   </Link>
                 </p>

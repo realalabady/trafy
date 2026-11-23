@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, Search } from "lucide-react";
 import "./NotFound.css";
 
 const NotFound: React.FC = () => {
@@ -12,12 +11,10 @@ const NotFound: React.FC = () => {
         <p>عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.</p>
         <div className="not-found-actions">
           <Link to="/" className="btn btn-primary btn-lg">
-            <Home size={18} />
             الصفحة الرئيسية
           </Link>
           <Link to="/products" className="btn btn-outline btn-lg">
-            <Search size={18} />
-            تصفح المنتجات
+            تصفح الأقمشة
           </Link>
         </div>
       </div>

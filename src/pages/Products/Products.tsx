@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Filter, ChevronDown, Grid, List } from "lucide-react";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useStore } from "../../store/useStore";
 import "./Products.css";
@@ -16,7 +15,7 @@ const Products: React.FC = () => {
   const featuredParam = searchParams.get("featured");
   const searchParam = searchParams.get("search");
 
-  // فلترة المنتجات
+  // فلترة الأقمشة
   let filteredProducts = [...products];
 
   // فلتر حسب التصنيف
@@ -28,7 +27,7 @@ const Products: React.FC = () => {
     );
   }
 
-  // فلتر المنتجات المميزة
+  // فلتر الأقمشة المختارة
   if (featuredParam === "true") {
     filteredProducts = filteredProducts.filter((p) => p.featured);
   }
@@ -74,7 +73,7 @@ const Products: React.FC = () => {
       return cat?.name || categoryParam;
     }
     if (activeSearch) return `نتائج البحث: ${activeSearch}`;
-    return "جميع المنتجات";
+    return "كل الأقمشة";
   };
 
   return (
@@ -83,7 +82,7 @@ const Products: React.FC = () => {
         {/* Page Header */}
         <div className="page-header">
           <h1>{getPageTitle()}</h1>
-          <p>{filteredProducts.length} منتج</p>
+          <p className="meta">{filteredProducts.length} صنف</p>
         </div>
 
         {/* Toolbar */}
@@ -92,7 +91,6 @@ const Products: React.FC = () => {
             className="filter-toggle"
             onClick={() => setShowFilters(!showFilters)}
           >
-            <Filter size={18} />
             الفلاتر
           </button>
 
@@ -108,22 +106,24 @@ const Products: React.FC = () => {
                 <option value="price-high">السعر: من الأعلى للأقل</option>
                 <option value="name">الاسم</option>
               </select>
-              <ChevronDown size={16} />
             </div>
 
             {/* View Mode */}
+            {/* العرض: كلمات لا أيقونات */}
             <div className="view-modes">
               <button
                 className={viewMode === "grid" ? "active" : ""}
                 onClick={() => setViewMode("grid")}
+                aria-pressed={viewMode === "grid"}
               >
-                <Grid size={18} />
+                شبكة
               </button>
               <button
                 className={viewMode === "list" ? "active" : ""}
                 onClick={() => setViewMode("list")}
+                aria-pressed={viewMode === "list"}
               >
-                <List size={18} />
+                قائمة
               </button>
             </div>
           </div>
@@ -136,7 +136,7 @@ const Products: React.FC = () => {
             <ul className="category-list">
               <li>
                 <Link to="/products" className={!categoryParam ? "active" : ""}>
-                  جميع المنتجات
+                  كل الأقمشة
                 </Link>
               </li>
               {categories.map((cat) => (
@@ -162,10 +162,10 @@ const Products: React.FC = () => {
           </div>
         ) : (
           <div className="no-products">
-            <p>لا توجد منتجات</p>
+            <p>لا توجد أقمشة</p>
             {categoryParam && (
               <Link to="/products" className="btn btn-primary">
-                عرض جميع المنتجات
+                عرض كل الأقمشة
               </Link>
             )}
           </div>

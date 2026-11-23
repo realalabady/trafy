@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { CreditCard, Loader, AlertCircle, Lock } from "lucide-react";
 import {
   createPayPalOrder,
   capturePayPalOrder,
@@ -178,7 +177,6 @@ const PayPalCardForm: React.FC<PayPalCardFormProps> = ({
   return (
     <div className="paypal-card-form">
       <div className="card-form-header">
-        <CreditCard size={20} />
         <span>ادفع بالبطاقة</span>
         <div className="card-brands">
           <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="Visa Mastercard Amex" />
@@ -192,14 +190,12 @@ const PayPalCardForm: React.FC<PayPalCardFormProps> = ({
 
       {error && (
         <div className="card-form-error">
-          <AlertCircle size={18} />
           <span>{error}</span>
         </div>
       )}
 
       {loading && (
         <div className="paypal-loading">
-          <Loader className="spinner" size={24} />
           <span>جاري تحميل نموذج الدفع...</span>
         </div>
       )}
@@ -207,7 +203,6 @@ const PayPalCardForm: React.FC<PayPalCardFormProps> = ({
       <div id="paypal-card-button" className="paypal-card-button-container"></div>
 
       <p className="card-form-note">
-        <Lock size={14} />
         <span>معاملة آمنة ومشفرة - بياناتك محمية</span>
       </p>
     </div>

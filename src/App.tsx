@@ -2,6 +2,7 @@ import React, { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase";
+import { STORE_ID } from "./config/store";
 import {
   getUserById,
   createOrUpdateUser,
@@ -115,28 +116,40 @@ const App: React.FC = () => {
   // الحفاظ على جلسة المستخدم عند تحديث الصفحة
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        // جلب بيانات المستخدم من Firestore
-        let userData = await getUserById(firebaseUser.uid);
+      // المصادقة مشتركة بين كل المتاجر، أما ملف المستخدم ودوره فلكل متجر على
+      // حدة تحت stores/{STORE_ID}/users. لذلك قد ينجح تسجيل الدخول وتفشل قراءة
+      // الملف بـ permission-denied — نلتقطها هنا حتى لا تتحول إلى شاشة بيضاء.
+      try {
+        if (firebaseUser) {
+          // جلب بيانات المستخدم من Firestore
+          let userData = await getUserById(firebaseUser.uid);
 
-        if (!userData) {
-          // إنشاء مستخدم جديد إذا لم يكن موجود
-          userData = {
-            id: firebaseUser.uid,
-            email: firebaseUser.email || "",
-            name: firebaseUser.displayName || "مستخدم",
-            role: "customer",
-            addresses: [],
-            createdAt: new Date(),
-          };
-          await createOrUpdateUser(userData);
+          if (!userData) {
+            // إنشاء مستخدم جديد إذا لم يكن موجود (في هذا المتجر فقط)
+            userData = {
+              id: firebaseUser.uid,
+              email: firebaseUser.email || "",
+              name: firebaseUser.displayName || "مستخدم",
+              role: "customer",
+              addresses: [],
+              createdAt: new Date(),
+            };
+            await createOrUpdateUser(userData);
+          }
+
+          setUser(userData);
+        } else {
+          setUser(null);
         }
-
-        setUser(userData);
-      } else {
+      } catch (error) {
+        console.error(
+          `[Auth] تعذّر قراءة/إنشاء ملف المستخدم في stores/${STORE_ID}/users/${firebaseUser?.uid}:`,
+          error instanceof Error ? error.message : error,
+        );
         setUser(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();

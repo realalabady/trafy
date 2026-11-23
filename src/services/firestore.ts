@@ -1,6 +1,4 @@
 import {
-  collection,
-  doc,
   getDocs,
   getDoc,
   setDoc,
@@ -14,12 +12,26 @@ import {
   Timestamp,
   increment,
 } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { storeCol, storeDoc, STORE_ID } from "../config/store";
 import type { Product, Category } from "../types";
+
+// كل المسارات هنا مقيّدة بمتجر واحد (stores/{STORE_ID}/...) عبر storeCol/storeDoc.
+// لا تستخدم collection(db, "...") مباشرة: المسارات العامة مشتركة بين كل المتاجر
+// وقواعد الأمان ترفضها.
+
+// onSnapshot بلا معالج أخطاء يطبع "Uncaught Error in snapshot listener" بلا أي
+// إشارة إلى المسار الفاشل، وهو عديم الفائدة عند تشخيص صلاحيات متعددة المتاجر.
+// هذا المعالج يذكر المجموعة والمتجر بالضبط.
+const snapshotError = (path: string) => (error: Error) => {
+  console.error(
+    `[Firestore] فشل الاشتراك في stores/${STORE_ID}/${path}:`,
+    error.message,
+  );
+};
 
 // ==================== Products ====================
 
-export const productsCollection = collection(db, "products");
+export const productsCollection = storeCol("products");
 
 export const getProducts = async (): Promise<Product[]> => {
   const snapshot = await getDocs(
@@ -48,7 +60,7 @@ export const updateProduct = async (
   id: string,
   product: Partial<Product>,
 ): Promise<void> => {
-  const docRef = doc(db, "products", id);
+  const docRef = storeDoc("products", id);
   await updateDoc(docRef, {
     ...product,
     updatedAt: Timestamp.now(),
@@ -56,7 +68,7 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (id: string): Promise<void> => {
-  const docRef = doc(db, "products", id);
+  const docRef = storeDoc("products", id);
   await deleteDoc(docRef);
 };
 
@@ -64,7 +76,7 @@ export const decrementStock = async (
   productId: string,
   quantity: number,
 ): Promise<void> => {
-  const docRef = doc(db, "products", productId);
+  const docRef = storeDoc("products", productId);
   await updateDoc(docRef, {
     stock: increment(-quantity),
     updatedAt: Timestamp.now(),
@@ -85,12 +97,13 @@ export const subscribeToProducts = (
       })) as Product[];
       callback(products);
     },
+    snapshotError("products"),
   );
 };
 
 // ==================== Categories ====================
 
-export const categoriesCollection = collection(db, "categories");
+export const categoriesCollection = storeCol("categories");
 
 export const getCategories = async (): Promise<Category[]> => {
   const snapshot = await getDocs(
@@ -119,7 +132,7 @@ export const updateCategory = async (
   id: string,
   category: Partial<Category>,
 ): Promise<void> => {
-  const docRef = doc(db, "categories", id);
+  const docRef = storeDoc("categories", id);
   await updateDoc(docRef, {
     ...category,
     updatedAt: Timestamp.now(),
@@ -127,7 +140,7 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (id: string): Promise<void> => {
-  const docRef = doc(db, "categories", id);
+  const docRef = storeDoc("categories", id);
   await deleteDoc(docRef);
 };
 
@@ -145,12 +158,13 @@ export const subscribeToCategories = (
       })) as Category[];
       callback(categories);
     },
+    snapshotError("categories"),
   );
 };
 
 // ==================== Orders ====================
 
-export const ordersCollection = collection(db, "orders");
+export const ordersCollection = storeCol("orders");
 
 export interface FirestoreOrder {
   id: string;
@@ -224,7 +238,7 @@ export const updateOrderStatus = async (
   id: string,
   status: FirestoreOrder["status"],
 ): Promise<void> => {
-  const docRef = doc(db, "orders", id);
+  const docRef = storeDoc("orders", id);
   await updateDoc(docRef, {
     status,
     updatedAt: Timestamp.now(),
@@ -235,7 +249,7 @@ export const updateOrderData = async (
   id: string,
   data: Partial<FirestoreOrder>,
 ): Promise<void> => {
-  const docRef = doc(db, "orders", id);
+  const docRef = storeDoc("orders", id);
   await updateDoc(docRef, {
     ...data,
     updatedAt: Timestamp.now(),
@@ -256,11 +270,12 @@ export const subscribeToOrders = (
       })) as FirestoreOrder[];
       callback(orders);
     },
+    snapshotError("orders"),
   );
 };
 
 export const deleteOrder = async (id: string): Promise<void> => {
-  const docRef = doc(db, "orders", id);
+  const docRef = storeDoc("orders", id);
   await deleteDoc(docRef);
 };
 
@@ -280,10 +295,10 @@ export type Order = FirestoreOrder;
 
 import type { User } from "../types";
 
-export const usersCollection = collection(db, "users");
+export const usersCollection = storeCol("users");
 
 export const getUser = async (userId: string): Promise<User | null> => {
-  const docRef = doc(db, "users", userId);
+  const docRef = storeDoc("users", userId);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return {
@@ -296,7 +311,7 @@ export const getUser = async (userId: string): Promise<User | null> => {
 };
 
 export const getUserById = async (userId: string): Promise<User | null> => {
-  const docRef = doc(db, "users", userId);
+  const docRef = storeDoc("users", userId);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return {
@@ -309,7 +324,7 @@ export const getUserById = async (userId: string): Promise<User | null> => {
 };
 
 export const createOrUpdateUser = async (user: User): Promise<void> => {
-  const docRef = doc(db, "users", user.id);
+  const docRef = storeDoc("users", user.id);
   await setDoc(
     docRef,
     {
@@ -328,7 +343,7 @@ export const updateUserRole = async (
   userId: string,
   role: "customer" | "admin",
 ): Promise<void> => {
-  const docRef = doc(db, "users", userId);
+  const docRef = storeDoc("users", userId);
   await updateDoc(docRef, { role });
 };
 
@@ -354,6 +369,7 @@ export const subscribeToUsers = (callback: (users: User[]) => void) => {
       })) as User[];
       callback(users);
     },
+    snapshotError("users"),
   );
 };
 
@@ -422,7 +438,10 @@ export const subscribeToUserOrders = (
       callback(orders);
     },
     (error) => {
-      console.error("subscribeToUserOrders error:", error);
+      console.error(
+        `[Firestore] فشل الاشتراك في stores/${STORE_ID}/orders (userId=${userId}):`,
+        error.message,
+      );
       if (onError) {
         onError(error);
       }
@@ -461,7 +480,7 @@ export interface StoreSettings {
 }
 
 export const getSettings = async (): Promise<StoreSettings | null> => {
-  const docRef = doc(db, "settings", "store");
+  const docRef = storeDoc("settings", "store");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data() as StoreSettings;
@@ -472,7 +491,7 @@ export const getSettings = async (): Promise<StoreSettings | null> => {
 export const updateSettings = async (
   settings: Partial<StoreSettings>,
 ): Promise<void> => {
-  const docRef = doc(db, "settings", "store");
+  const docRef = storeDoc("settings", "store");
   await setDoc(
     docRef,
     {
@@ -486,14 +505,14 @@ export const updateSettings = async (
 export const subscribeToSettings = (
   callback: (settings: StoreSettings | null) => void,
 ) => {
-  const docRef = doc(db, "settings", "store");
-  return onSnapshot(docRef, (docSnap) => {
-    if (docSnap.exists()) {
-      callback(docSnap.data() as StoreSettings);
-    } else {
-      callback(null);
-    }
-  });
+  const docRef = storeDoc("settings", "store");
+  return onSnapshot(
+    docRef,
+    (docSnap) => {
+      callback(docSnap.exists() ? (docSnap.data() as StoreSettings) : null);
+    },
+    snapshotError("settings/store"),
+  );
 };
 
 // ==================== Email (SMTP) Settings ====================
@@ -510,7 +529,7 @@ export interface EmailSettings {
 }
 
 export const getEmailSettings = async (): Promise<EmailSettings | null> => {
-  const docRef = doc(db, "settings", "email");
+  const docRef = storeDoc("settings", "email");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data() as EmailSettings;
@@ -521,7 +540,7 @@ export const getEmailSettings = async (): Promise<EmailSettings | null> => {
 export const updateEmailSettings = async (
   settings: Partial<EmailSettings>,
 ): Promise<void> => {
-  const docRef = doc(db, "settings", "email");
+  const docRef = storeDoc("settings", "email");
   await setDoc(
     docRef,
     {
@@ -548,7 +567,7 @@ export interface ContactMessage {
 export const addContactMessage = async (
   message: Omit<ContactMessage, "id" | "read" | "createdAt">,
 ): Promise<string> => {
-  const docRef = await addDoc(collection(db, "contactMessages"), {
+  const docRef = await addDoc(storeCol("contactMessages"), {
     ...message,
     read: false,
     createdAt: Timestamp.now(),
@@ -560,7 +579,7 @@ export const subscribeToContactMessages = (
   callback: (messages: ContactMessage[]) => void,
 ) => {
   return onSnapshot(
-    query(collection(db, "contactMessages"), orderBy("createdAt", "desc")),
+    query(storeCol("contactMessages"), orderBy("createdAt", "desc")),
     (snapshot) => {
       const messages = snapshot.docs.map((d) => ({
         id: d.id,
@@ -569,16 +588,17 @@ export const subscribeToContactMessages = (
       })) as ContactMessage[];
       callback(messages);
     },
+    snapshotError("contactMessages"),
   );
 };
 
 export const markMessageRead = async (id: string): Promise<void> => {
-  const docRef = doc(db, "contactMessages", id);
+  const docRef = storeDoc("contactMessages", id);
   await updateDoc(docRef, { read: true });
 };
 
 export const deleteContactMessage = async (id: string): Promise<void> => {
-  const docRef = doc(db, "contactMessages", id);
+  const docRef = storeDoc("contactMessages", id);
   await deleteDoc(docRef);
 };
 
@@ -587,7 +607,7 @@ export const deleteContactMessage = async (id: string): Promise<void> => {
 import type { CJSettings } from "../types";
 
 export const getCJSettings = async (): Promise<CJSettings | null> => {
-  const docRef = doc(db, "settings", "cjDropshipping");
+  const docRef = storeDoc("settings", "cjDropshipping");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data() as CJSettings;
@@ -598,7 +618,7 @@ export const getCJSettings = async (): Promise<CJSettings | null> => {
 export const updateCJSettings = async (
   settings: Partial<CJSettings>,
 ): Promise<void> => {
-  const docRef = doc(db, "settings", "cjDropshipping");
+  const docRef = storeDoc("settings", "cjDropshipping");
   await setDoc(
     docRef,
     {
@@ -612,14 +632,14 @@ export const updateCJSettings = async (
 export const subscribeToCJSettings = (
   callback: (settings: CJSettings | null) => void,
 ) => {
-  const docRef = doc(db, "settings", "cjDropshipping");
-  return onSnapshot(docRef, (docSnap) => {
-    if (docSnap.exists()) {
-      callback(docSnap.data() as CJSettings);
-    } else {
-      callback(null);
-    }
-  });
+  const docRef = storeDoc("settings", "cjDropshipping");
+  return onSnapshot(
+    docRef,
+    (docSnap) => {
+      callback(docSnap.exists() ? (docSnap.data() as CJSettings) : null);
+    },
+    snapshotError("settings/cjDropshipping"),
+  );
 };
 
 // تحديث طلب مع بيانات CJ
@@ -635,7 +655,7 @@ export const updateOrderCJData = async (
     cjLogisticName?: string;
   },
 ): Promise<void> => {
-  const docRef = doc(db, "orders", orderId);
+  const docRef = storeDoc("orders", orderId);
   await updateDoc(docRef, {
     ...cjData,
     updatedAt: Timestamp.now(),

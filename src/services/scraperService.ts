@@ -9,6 +9,7 @@ import { scrapeProduct as clientScrape } from "./productScraper";
 import type { ProductVariantType, ProductVariant } from "../types";
 
 const functions = getFunctions();
+import { withStore } from "../config/store";
 
 // متغيرات المنتج من أمازون
 export interface ScrapedVariantOption {
@@ -112,7 +113,7 @@ async function serverScrape(url: string): Promise<ScrapedProduct> {
     "scrapeProductFromUrl"
   );
 
-  const result = await scrapeFunction({ url });
+  const result = await scrapeFunction(withStore({ url }));
   return result.data;
 }
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { useStore } from '../../store/useStore';
@@ -115,7 +114,6 @@ const Login: React.FC = () => {
     <div className="login-page">
       <div className="login-container">
         <Link to="/" className="back-home-btn">
-          <ArrowRight size={20} />
           العودة للرئيسية
         </Link>
         <div className="login-box">
@@ -137,7 +135,6 @@ const Login: React.FC = () => {
             <div className="form-group">
               <label className="form-label">البريد الإلكتروني</label>
               <div className="input-icon">
-                <Mail size={20} />
                 <input
                   type="email"
                   className="form-input"
@@ -152,7 +149,6 @@ const Login: React.FC = () => {
             <div className="form-group">
               <label className="form-label">كلمة المرور</label>
               <div className="input-icon">
-                <Lock size={20} />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   className="form-input"
@@ -166,7 +162,7 @@ const Login: React.FC = () => {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <></> : <></>}
                 </button>
               </div>
             </div>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { CheckCircle, Loader, ShoppingBag, Package } from "lucide-react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../config/firebase";
+import { getDoc } from "firebase/firestore";
+import { storeDoc } from "../../config/store";
 import { useStore } from "../../store/useStore";
 import "./OrderConfirmation.css";
 
@@ -29,7 +28,7 @@ const OrderConfirmation: React.FC = () => {
         return;
       }
       try {
-        const snap = await getDoc(doc(db, "orders", orderId));
+        const snap = await getDoc(storeDoc("orders", orderId));
         if (active && snap.exists()) {
           setOrder({ id: snap.id, ...snap.data() } as ConfirmationOrder);
         }
@@ -59,13 +58,11 @@ const OrderConfirmation: React.FC = () => {
         <div className="confirmation-card">
           {loading ? (
             <div className="confirmation-loading">
-              <Loader className="spinner" size={40} aria-hidden="true" />
               <p>جاري تحميل تفاصيل الطلب…</p>
             </div>
           ) : (
             <>
               <div className="confirmation-icon" aria-hidden="true">
-                <CheckCircle size={72} />
               </div>
               <h1>تم استلام طلبك بنجاح!</h1>
               <p className="confirmation-subtitle">
@@ -79,7 +76,6 @@ const OrderConfirmation: React.FC = () => {
 
               {order?.total != null && (
                 <div className="confirmation-total">
-                  <Package size={18} aria-hidden="true" />
                   <span>الإجمالي: </span>
                   <strong>{formatPrice(order.total)}</strong>
                 </div>
@@ -98,7 +94,6 @@ const OrderConfirmation: React.FC = () => {
                   className="btn btn-outline"
                   onClick={() => navigate("/products")}
                 >
-                  <ShoppingBag size={18} aria-hidden="true" />
                   مواصلة التسوق
                 </button>
               </div>

@@ -1,13 +1,4 @@
 import { useState } from "react";
-import {
-  ChevronDown,
-  ShoppingCart,
-  Truck,
-  RotateCcw,
-  CreditCard,
-  Shield,
-  Headphones,
-} from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Legal.css";
 
@@ -18,14 +9,12 @@ interface FAQItem {
 
 interface FAQCategory {
   title: string;
-  icon: React.ReactNode;
   items: FAQItem[];
 }
 
 const faqData: FAQCategory[] = [
   {
     title: "الطلبات والشراء",
-    icon: <ShoppingCart size={22} />,
     items: [
       {
         question: "كيف أقوم بتقديم طلب شراء؟",
@@ -38,15 +27,14 @@ const faqData: FAQCategory[] = [
           "يمكنك تعديل أو إلغاء طلبك قبل شحنه. بعد الشحن، يمكنك رفض الاستلام أو طلب الإرجاع وفقاً لسياسة الإرجاع الخاصة بنا.",
       },
       {
-        question: "هل المنتجات المعروضة أصلية؟",
+        question: "هل الأقمشة المعروضة أصلية؟",
         answer:
-          "نعم، جميع المنتجات في متجرنا أصلية 100% ومستوردة من الوكلاء المعتمدين. نضمن لك جودة وأصالة كل منتج.",
+          "نعم، كل الأقمشة في متجرنا أصلية 100% ومستوردة من الوكلاء المعتمدين. نضمن لك جودة وأصالة كل منتج.",
       },
     ],
   },
   {
     title: "الشحن والتوصيل",
-    icon: <Truck size={22} />,
     items: [
       {
         question: "كم تستغرق مدة التوصيل؟",
@@ -67,7 +55,6 @@ const faqData: FAQCategory[] = [
   },
   {
     title: "الإرجاع والاستبدال",
-    icon: <RotateCcw size={22} />,
     items: [
       {
         question: "ما هي سياسة الإرجاع؟",
@@ -88,7 +75,6 @@ const faqData: FAQCategory[] = [
   },
   {
     title: "الدفع",
-    icon: <CreditCard size={22} />,
     items: [
       {
         question: "ما هي طرق الدفع المتاحة؟",
@@ -104,12 +90,11 @@ const faqData: FAQCategory[] = [
   },
   {
     title: "الضمان والصيانة",
-    icon: <Shield size={22} />,
     items: [
       {
-        question: "هل المنتجات مشمولة بالضمان؟",
+        question: "هل الأقمشة مشمولة بالضمان؟",
         answer:
-          "نعم، جميع المنتجات الإلكترونية تأتي بضمان المصنع. مدة الضمان مذكورة في صفحة كل منتج. يغطي الضمان عيوب التصنيع فقط.",
+          "نعم، كل الأقمشة الإلكترونية تأتي بضمان المصنع. مدة الضمان مذكورة في صفحة كل منتج. يغطي الضمان عيوب التصنيع فقط.",
       },
       {
         question: "ماذا لا يغطيه الضمان؟",
@@ -146,7 +131,7 @@ const FAQ = () => {
         {faqData.map((category, catIdx) => (
           <div key={catIdx} className="legal-section">
             <h2>
-              {category.icon} {category.title}
+              {category.title}
             </h2>
             <div className="faq-list">
               {category.items.map((item, itemIdx) => {
@@ -159,7 +144,6 @@ const FAQ = () => {
                       onClick={() => toggleItem(key)}
                     >
                       <span>{item.question}</span>
-                      <ChevronDown size={18} />
                     </button>
                     {isOpen && <div className="faq-answer">{item.answer}</div>}
                   </div>
@@ -171,7 +155,7 @@ const FAQ = () => {
 
         <div className="legal-section">
           <h2>
-            <Headphones size={22} /> لم تجد إجابة لسؤالك؟
+            <></> لم تجد إجابة لسؤالك؟
           </h2>
           <p>
             إذا لم تجد إجابة لسؤالك في القائمة أعلاه، لا تتردد في التواصل معنا.

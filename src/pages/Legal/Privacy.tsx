@@ -1,4 +1,3 @@
-import { Shield, Eye, Lock, Database, UserCheck, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Legal.css";
 
@@ -13,7 +12,7 @@ const Privacy = () => {
       <div className="legal-content">
         <div className="legal-section">
           <h2>
-            <Shield size={22} /> مقدمة
+            <></> مقدمة
           </h2>
           <p>
             نحن في متجرنا نلتزم بحماية خصوصية عملائنا وزوار موقعنا
@@ -25,7 +24,7 @@ const Privacy = () => {
 
         <div className="legal-section">
           <h2>
-            <Database size={22} /> المعلومات التي نجمعها
+            <></> المعلومات التي نجمعها
           </h2>
           <p>نقوم بجمع المعلومات التالية عند استخدامك لموقعنا:</p>
           <ul>
@@ -41,11 +40,11 @@ const Privacy = () => {
 
         <div className="legal-section">
           <h2>
-            <Eye size={22} /> كيف نستخدم معلوماتك
+            <></> كيف نستخدم معلوماتك
           </h2>
           <p>نستخدم المعلومات التي نجمعها للأغراض التالية:</p>
           <ul>
-            <li>معالجة الطلبات وتوصيل المنتجات إلى عنوانك</li>
+            <li>معالجة الطلبات وتوصيل الأقمشة إلى عنوانك</li>
             <li>إدارة حسابك وتقديم خدمة العملاء</li>
             <li>إرسال تحديثات حول طلباتك وحالة الشحن</li>
             <li>تحسين تجربة التسوق وتخصيص المحتوى</li>
@@ -55,7 +54,7 @@ const Privacy = () => {
 
         <div className="legal-section">
           <h2>
-            <Lock size={22} /> حماية المعلومات
+            <></> حماية المعلومات
           </h2>
           <p>نتخذ إجراءات أمنية صارمة لحماية معلوماتك الشخصية، تشمل:</p>
           <ul>
@@ -74,7 +73,7 @@ const Privacy = () => {
 
         <div className="legal-section">
           <h2>
-            <UserCheck size={22} /> حقوقك
+            <></> حقوقك
           </h2>
           <p>لديك الحقوق التالية فيما يتعلق ببياناتك الشخصية:</p>
           <ul>
@@ -88,7 +87,7 @@ const Privacy = () => {
 
         <div className="legal-section">
           <h2>
-            <Bell size={22} /> ملفات تعريف الارتباط (Cookies)
+            <></> ملفات تعريف الارتباط (Cookies)
           </h2>
           <p>
             نستخدم ملفات تعريف الارتباط لتحسين تجربتك على موقعنا. تساعدنا هذه

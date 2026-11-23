@@ -1,21 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import {
-  ShoppingCart,
-  Heart,
-  Share2,
-  Truck,
-  Shield,
-  RotateCcw,
-  Minus,
-  Plus,
-  ChevronRight,
-  Star,
-  Package,
-  ArrowRight,
-  Palette,
-  Ruler,
-} from "lucide-react";
 import { useStore } from "../../store/useStore";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductDetail.css";
@@ -151,11 +135,10 @@ const ProductDetail: React.FC = () => {
       <div className="product-detail-page">
         <div className="container">
           <div className="not-found">
-            <Package size={80} />
-            <h2>المنتج غير موجود</h2>
-            <p>عذراً، لم نتمكن من العثور على هذا المنتج</p>
+            <h2>القماش غير موجود</h2>
+            <p>عذراً، لم نتمكن من العثور على هذا القماش</p>
             <Link to="/products" className="btn btn-primary btn-lg">
-              تصفح المنتجات
+              تصفح الأقمشة
             </Link>
           </div>
         </div>
@@ -167,7 +150,7 @@ const ProductDetail: React.FC = () => {
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
     : 0;
 
-  // منتجات ذات صلة (نفس التصنيف)
+  // أقمشة ذات صلة (نفس التصنيف)
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
@@ -178,13 +161,10 @@ const ProductDetail: React.FC = () => {
         {/* Breadcrumb */}
         <nav className="breadcrumb">
           <Link to="/">الرئيسية</Link>
-          <ChevronRight size={14} />
-          <Link to="/products">المنتجات</Link>
-          <ChevronRight size={14} />
+          <Link to="/products">الأقمشة</Link>
           <Link to={`/products?category=${product.category}`}>
             {categoryName}
           </Link>
-          <ChevronRight size={14} />
           <span>{product.name}</span>
         </nav>
 
@@ -225,18 +205,6 @@ const ProductDetail: React.FC = () => {
               <p className="product-name-en">{product.nameEn}</p>
             )}
 
-            {/* Rating */}
-            <div className="product-rating">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={18}
-                  fill={i < 4 ? "#fbbf24" : "none"}
-                  color="#fbbf24"
-                />
-              ))}
-              <span className="rating-text">(لا توجد تقييمات بعد)</span>
-            </div>
 
             {/* Price */}
             <div className="product-price-section">
@@ -283,12 +251,10 @@ const ProductDetail: React.FC = () => {
                       <div className="variant-label">
                         {isColorType ? (
                           <>
-                            <Palette size={16} />
                             <span className="color-title">اختر لونك المفضل</span>
                           </>
                         ) : (
                           <>
-                            <Ruler size={16} />
                             <span>{variantType.name}:</span>
                           </>
                         )}
@@ -329,7 +295,6 @@ const ProductDetail: React.FC = () => {
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={product.stock === 0}
                 >
-                  <Minus size={18} />
                 </button>
                 <span>{quantity}</span>
                 <button
@@ -338,7 +303,6 @@ const ProductDetail: React.FC = () => {
                   }
                   disabled={product.stock === 0}
                 >
-                  <Plus size={18} />
                 </button>
               </div>
 
@@ -347,7 +311,6 @@ const ProductDetail: React.FC = () => {
                 onClick={handleAddToCart}
                 disabled={product.stock === 0 || (product.hasVariants && !allVariantsSelected)}
               >
-                <ShoppingCart size={20} />
                 {addedToCart ? "تمت الإضافة ✓" : product.hasVariants && !allVariantsSelected ? "اختر الخيارات" : "أضف للسلة"}
               </button>
             </div>
@@ -358,23 +321,11 @@ const ProductDetail: React.FC = () => {
                 className={`action-btn-detail ${product && isInWishlist(product.id) ? "wishlisted" : ""}`}
                 onClick={() => product && toggleWishlist(product.id)}
               >
-                <Heart
-                  size={18}
-                  fill={
-                    product && isInWishlist(product.id) ? "#ef4444" : "none"
-                  }
-                  color={
-                    product && isInWishlist(product.id)
-                      ? "#ef4444"
-                      : "currentColor"
-                  }
-                />
                 {product && isInWishlist(product.id)
                   ? "في المفضلة"
                   : "أضف للمفضلة"}
               </button>
               <button className="action-btn-detail" onClick={handleShare}>
-                <Share2 size={18} />
                 مشاركة
               </button>
             </div>
@@ -382,21 +333,18 @@ const ProductDetail: React.FC = () => {
             {/* Features */}
             <div className="product-features">
               <div className="feature">
-                <Truck size={20} />
                 <div>
                   <strong>شحن سريع</strong>
                   <span>توصيل خلال 3-5 أيام</span>
                 </div>
               </div>
               <div className="feature">
-                <Shield size={20} />
                 <div>
                   <strong>ضمان شامل</strong>
-                  <span>ضمان على جميع المنتجات</span>
+                  <span>ضمان على كل الأقمشة</span>
                 </div>
               </div>
               <div className="feature">
-                <RotateCcw size={20} />
                 <div>
                   <strong>إرجاع مجاني</strong>
                   <span>خلال 14 يوم</span>
@@ -437,7 +385,7 @@ const ProductDetail: React.FC = () => {
                     {cleanDescription(product.description)}
                   </p>
                 ) : (
-                  <p>لا يوجد وصف لهذا المنتج بعد.</p>
+                  <p>لا يوجد وصف لهذا القماش بعد.</p>
                 )}
               </div>
             )}
@@ -456,7 +404,7 @@ const ProductDetail: React.FC = () => {
                     </tbody>
                   </table>
                 ) : (
-                  <p>لا توجد مواصفات مضافة لهذا المنتج.</p>
+                  <p>لا توجد مواصفات مضافة لهذا القماش.</p>
                 )}
               </div>
             )}
@@ -465,7 +413,7 @@ const ProductDetail: React.FC = () => {
               <div className="tab-shipping">
                 <div className="shipping-info-block">
                   <h4>
-                    <Truck size={18} /> الشحن
+                    <></> الشحن
                   </h4>
                   <ul>
                     <li>التوصيل خلال 3-5 أيام عمل</li>
@@ -475,7 +423,7 @@ const ProductDetail: React.FC = () => {
                 </div>
                 <div className="shipping-info-block">
                   <h4>
-                    <RotateCcw size={18} /> سياسة الإرجاع
+                    <></> سياسة الإرجاع
                   </h4>
                   <ul>
                     <li>إرجاع مجاني خلال 14 يوم من الاستلام</li>
@@ -492,12 +440,12 @@ const ProductDetail: React.FC = () => {
         {relatedProducts.length > 0 && (
           <div className="related-products">
             <div className="section-header">
-              <h2>منتجات ذات صلة</h2>
+              <h2>أقمشة ذات صلة</h2>
               <Link
                 to={`/products?category=${product.category}`}
                 className="view-all"
               >
-                عرض الكل <ArrowRight size={18} />
+                عرض الكل <></>
               </Link>
             </div>
             <div className="products-grid">

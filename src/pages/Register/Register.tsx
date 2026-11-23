@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, User, ArrowRight } from "lucide-react";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -129,7 +128,6 @@ const Register: React.FC = () => {
     <div className="login-page">
       <div className="login-container">
         <Link to="/" className="back-home-btn">
-          <ArrowRight size={20} />
           العودة للرئيسية
         </Link>
         <div className="login-box">
@@ -147,7 +145,6 @@ const Register: React.FC = () => {
             <div className="form-group">
               <label className="form-label">الاسم الكامل</label>
               <div className="input-icon">
-                <User size={20} />
                 <input
                   type="text"
                   className="form-input"
@@ -162,7 +159,6 @@ const Register: React.FC = () => {
             <div className="form-group">
               <label className="form-label">البريد الإلكتروني</label>
               <div className="input-icon">
-                <Mail size={20} />
                 <input
                   type="email"
                   className="form-input"
@@ -177,7 +173,6 @@ const Register: React.FC = () => {
             <div className="form-group">
               <label className="form-label">كلمة المرور</label>
               <div className="input-icon">
-                <Lock size={20} />
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-input"
@@ -191,7 +186,7 @@ const Register: React.FC = () => {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <></> : <></>}
                 </button>
               </div>
             </div>
@@ -199,7 +194,6 @@ const Register: React.FC = () => {
             <div className="form-group">
               <label className="form-label">تأكيد كلمة المرور</label>
               <div className="input-icon">
-                <Lock size={20} />
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-input"

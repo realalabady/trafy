@@ -5,9 +5,12 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { storage } from "../config/firebase";
+import { storagePath } from "../config/store";
 
 /**
- * Upload an image file to Firebase Storage and return the download URL
+ * Upload an image file to Firebase Storage and return the download URL.
+ * الرفع يتم تحت stores/{STORE_ID}/ حتى لا يتشارك متجران نفس البادئة في
+ * الـ bucket — يبقى `path` نسبياً ("products"، "categories").
  */
 export const uploadImage = async (
   file: File,
@@ -16,7 +19,10 @@ export const uploadImage = async (
   // Create a unique filename
   const timestamp = Date.now();
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const storageRef = ref(storage, `${path}/${timestamp}_${safeName}`);
+  const storageRef = ref(
+    storage,
+    storagePath(`${path}/${timestamp}_${safeName}`),
+  );
 
   // Upload the file
   const snapshot = await uploadBytes(storageRef, file, {

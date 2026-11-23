@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from "lucide-react";
 import { useStore } from "../../store/useStore";
 import { getSettings } from "../../services/firestore";
 import "./Cart.css";
@@ -53,11 +52,10 @@ const Cart: React.FC = () => {
       <div className="cart-page">
         <div className="container">
           <div className="empty-cart">
-            <ShoppingBag size={80} />
             <h2>سلة التسوق فارغة</h2>
-            <p>لم تقم بإضافة أي منتجات إلى سلة التسوق بعد</p>
+            <p>لم تقم بإضافة أي أقمشة إلى سلة التسوق بعد</p>
             <Link to="/products" className="btn btn-primary btn-lg">
-              تصفح المنتجات
+              تصفح الأقمشة
             </Link>
           </div>
         </div>
@@ -126,7 +124,6 @@ const Cart: React.FC = () => {
                       updateQuantity(item.product.id, item.quantity - 1, item.selectedVariants)
                     }
                   >
-                    <Minus size={16} />
                   </button>
                   <span className="qty-value">{item.quantity}</span>
                   <button
@@ -135,7 +132,6 @@ const Cart: React.FC = () => {
                       updateQuantity(item.product.id, item.quantity + 1, item.selectedVariants)
                     }
                   >
-                    <Plus size={16} />
                   </button>
                 </div>
                 <div className="item-price">
@@ -145,21 +141,18 @@ const Cart: React.FC = () => {
                   className="remove-btn"
                   onClick={() => removeFromCart(item.product.id, item.selectedVariants)}
                 >
-                  <Trash2 size={18} />
                 </button>
               </div>
             ))}
 
             <div className="cart-actions">
               <Link to="/products" className="btn btn-outline">
-                <ArrowRight size={18} />
                 متابعة التسوق
               </Link>
               <button
                 className="btn btn-outline btn-danger"
                 onClick={clearCart}
               >
-                <Trash2 size={18} />
                 إفراغ السلة
               </button>
             </div>

@@ -1,13 +1,4 @@
 import React, { useState } from "react";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Send,
-  Clock,
-  MessageSquare,
-  Loader,
-} from "lucide-react";
 import { addContactMessage } from "../../services/firestore";
 import { useStore } from "../../store/useStore";
 import "./Contact.css";
@@ -60,7 +51,6 @@ const Contact: React.FC = () => {
           <div className="contact-info">
             <div className="info-card">
               <div className="info-icon">
-                <Phone size={24} />
               </div>
               <div>
                 <h3>اتصل بنا</h3>
@@ -71,7 +61,6 @@ const Contact: React.FC = () => {
 
             <div className="info-card">
               <div className="info-icon">
-                <Mail size={24} />
               </div>
               <div>
                 <h3>البريد الإلكتروني</h3>
@@ -82,7 +71,6 @@ const Contact: React.FC = () => {
 
             <div className="info-card">
               <div className="info-icon">
-                <MapPin size={24} />
               </div>
               <div>
                 <h3>العنوان</h3>
@@ -92,7 +80,6 @@ const Contact: React.FC = () => {
 
             <div className="info-card">
               <div className="info-icon">
-                <Clock size={24} />
               </div>
               <div>
                 <h3>ساعات العمل</h3>
@@ -107,7 +94,6 @@ const Contact: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <MessageSquare size={20} />
                 تواصل عبر واتساب
               </a>
             </div>
@@ -117,7 +103,6 @@ const Contact: React.FC = () => {
           <div className="contact-form-card">
             {submitted ? (
               <div className="success-message">
-                <Send size={48} />
                 <h2>تم إرسال رسالتك بنجاح!</h2>
                 <p>شكراً لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.</p>
                 <button
@@ -230,11 +215,11 @@ const Contact: React.FC = () => {
                   >
                     {loading ? (
                       <>
-                        <Loader size={18} className="spinner" /> جاري الإرسال...
+                        <></> جاري الإرسال...
                       </>
                     ) : (
                       <>
-                        <Send size={18} /> إرسال الرسالة
+                        <></> إرسال الرسالة
                       </>
                     )}
                   </button>

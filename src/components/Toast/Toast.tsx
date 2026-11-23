@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { CheckCircle, AlertCircle, Info, X } from "lucide-react";
 import "./Toast.css";
 
 export type ToastType = "success" | "error" | "info";
@@ -38,9 +37,9 @@ export const useToast = (): ToastContextValue => {
 };
 
 const icons: Record<ToastType, React.ReactNode> = {
-  success: <CheckCircle size={20} aria-hidden="true" />,
-  error: <AlertCircle size={20} aria-hidden="true" />,
-  info: <Info size={20} aria-hidden="true" />,
+  success: <></>,
+  error: <></>,
+  info: <></>,
 };
 
 const ToastView: React.FC<{ toast: ToastItem; onClose: (id: string) => void }> = ({
@@ -57,7 +56,6 @@ const ToastView: React.FC<{ toast: ToastItem; onClose: (id: string) => void }> =
         aria-label="إغلاق الإشعار"
         onClick={() => onClose(toast.id)}
       >
-        <X size={16} aria-hidden="true" />
       </button>
     </div>
   );

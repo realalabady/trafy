@@ -29,8 +29,7 @@
 }
 
 .toast-icon {
-  display: inline-flex;
-  flex-shrink: 0;
+  display: none;
 }
 
 .toast-message {

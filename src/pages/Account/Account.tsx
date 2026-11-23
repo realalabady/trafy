@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  User,
-  MapPin,
-  Phone,
-  Edit,
-  Save,
-  Package,
-  Heart,
-  LogOut,
-  ShoppingBag,
-  Loader,
-  Clock,
-  Truck,
-  CheckCircle,
-  XCircle,
-  Trash2,
-} from "lucide-react";
 import { signOut } from "firebase/auth";
-import { auth, db } from "../../config/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { auth } from "../../config/firebase";
+import { updateDoc } from "firebase/firestore";
+import { storeDoc } from "../../config/store";
 import { useStore } from "../../store/useStore";
 import { getUserOrders } from "../../services/firestore";
 import type { FirestoreOrder } from "../../services/firestore";
@@ -58,31 +42,26 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
   const statusConfig = {
     pending: {
       label: "قيد الانتظار",
-      icon: Clock,
       color: "#f59e0b",
       bg: "#fef3c7",
     },
     processing: {
       label: "قيد التجهيز",
-      icon: Package,
       color: "#3b82f6",
       bg: "#dbeafe",
     },
     shipped: {
       label: "تم الشحن",
-      icon: Truck,
       color: "#8b5cf6",
       bg: "#ede9fe",
     },
     delivered: {
       label: "تم التسليم",
-      icon: CheckCircle,
       color: "#22c55e",
       bg: "#dcfce7",
     },
     cancelled: {
       label: "ملغي",
-      icon: XCircle,
       color: "#ef4444",
       bg: "#fee2e2",
     },
@@ -147,7 +126,7 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
     setLoading(true);
 
     try {
-      const userRef = doc(db, "users", user.id);
+      const userRef = storeDoc("users", user.id);
       const updatedData = {
         name: formData.name,
         phone: formData.phone,
@@ -196,7 +175,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
             <aside className="account-sidebar">
               <div className="user-info">
                 <div className="user-avatar">
-                  <User size={40} />
                 </div>
                 <div className="user-details">
                   <h3>{user.name || "مستخدم"}</h3>
@@ -209,32 +187,27 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                   className={`nav-item ${activeTab === "profile" ? "active" : ""}`}
                   onClick={() => setActiveTab("profile")}
                 >
-                  <User size={20} />
                   <span>الملف الشخصي</span>
                 </button>
                 <button
                   className={`nav-item ${activeTab === "orders" ? "active" : ""}`}
                   onClick={() => setActiveTab("orders")}
                 >
-                  <Package size={20} />
                   <span>طلباتي</span>
                 </button>
                 <button
                   className={`nav-item ${activeTab === "addresses" ? "active" : ""}`}
                   onClick={() => setActiveTab("addresses")}
                 >
-                  <MapPin size={20} />
                   <span>عناويني</span>
                 </button>
                 <button
                   className={`nav-item ${activeTab === "wishlist" ? "active" : ""}`}
                   onClick={() => setActiveTab("wishlist")}
                 >
-                  <Heart size={20} />
                   <span>المفضلة</span>
                 </button>
                 <button className="nav-item logout" onClick={handleLogout}>
-                  <LogOut size={20} />
                   <span>تسجيل الخروج</span>
                 </button>
               </nav>
@@ -252,7 +225,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                         className="btn btn-outline"
                         onClick={() => setEditing(true)}
                       >
-                        <Edit size={18} />
                         تعديل
                       </button>
                     ) : (
@@ -261,12 +233,7 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                         onClick={handleSave}
                         disabled={loading}
                       >
-                        {loading ? (
-                          <Loader className="spinner" size={18} />
-                        ) : (
-                          <Save size={18} />
-                        )}
-                        حفظ
+                        {loading ? "جارٍ الحفظ…" : "حفظ"}
                       </button>
                     )}
                   </div>
@@ -406,12 +373,10 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                   </div>
                   {ordersLoading ? (
                     <div className="loading-state">
-                      <Loader className="spinner" size={40} />
                       <p>جاري تحميل الطلبات...</p>
                     </div>
                   ) : orders.length === 0 ? (
                     <div className="empty-state">
-                      <ShoppingBag size={60} />
                       <h3>لا توجد طلبات</h3>
                       <p>لم تقم بأي طلبات بعد</p>
                       <button
@@ -425,7 +390,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                     <div className="orders-list">
                       {orders.map((order) => {
                         const status = statusConfig[order.status];
-                        const StatusIcon = status.icon;
                         return (
                           <div key={order.id} className="order-card">
                             <div className="order-header">
@@ -457,7 +421,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                                     color: status.color,
                                   }}
                                 >
-                                  <StatusIcon size={14} />
                                   {status.label}
                                 </span>
                               </div>
@@ -489,7 +452,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                             {/* Tracking Info */}
                             {order.trackingNumber && (
                               <div className="order-tracking">
-                                <Truck size={16} />
                                 <span>رقم التتبع: </span>
                                 <strong>{order.trackingNumber}</strong>
                                 {order.trackingUrl && (
@@ -506,7 +468,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                             )}
                             <div className="order-footer">
                               <div className="order-address">
-                                <MapPin size={14} />
                                 <span>{order.shippingAddress}</span>
                               </div>
                               <div className="order-total">
@@ -532,7 +493,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                     <div className="addresses-list">
                       {user.addresses.map((addr, idx) => (
                         <div key={idx} className="address-card">
-                          <MapPin size={20} />
                           <div className="address-details">
                             <strong>{addr.city}</strong>
                             <p>
@@ -540,7 +500,7 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                             </p>
                             {addr.building && <p>مبنى: {addr.building}</p>}
                             <p>
-                              <Phone size={14} /> {addr.phone}
+                              <></> {addr.phone}
                             </p>
                           </div>
                         </div>
@@ -548,7 +508,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                     </div>
                   ) : (
                     <div className="empty-state">
-                      <MapPin size={60} />
                       <h3>لا توجد عناوين</h3>
                       <p>أضف عنوان التوصيل من الملف الشخصي</p>
                     </div>
@@ -564,14 +523,13 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                   </div>
                   {wishlist.length === 0 ? (
                     <div className="empty-state">
-                      <Heart size={60} />
                       <h3>القائمة فارغة</h3>
-                      <p>أضف منتجات للمفضلة لتجدها هنا</p>
+                      <p>أضف أقمشة للمفضلة لتجدها هنا</p>
                       <button
                         className="btn btn-primary"
                         onClick={() => navigate("/products")}
                       >
-                        تصفح المنتجات
+                        تصفح الأقمشة
                       </button>
                     </div>
                   ) : (
@@ -606,7 +564,6 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                               onClick={() => toggleWishlist(product.id)}
                               title="إزالة من المفضلة"
                             >
-                              <Trash2 size={18} />
                             </button>
                           </div>
                         );

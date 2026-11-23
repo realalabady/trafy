@@ -24,8 +24,11 @@
 }
 
 .confirmation-icon {
-  color: var(--success, #788c5d);
-  margin-bottom: 16px;
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--ok);
+  margin: 0 auto 20px;
 }
 
 .confirmation-card h1 {

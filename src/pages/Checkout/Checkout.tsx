@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
-import {
-  MapPin,
-  CreditCard,
-  Truck,
-  ShoppingBag,
-  ArrowRight,
-  Check,
-  Loader,
-  AlertCircle,
-  Clock,
-} from "lucide-react";
 import { useStore } from "../../store/useStore";
 import {
   addOrder,
@@ -343,7 +332,7 @@ const Checkout: React.FC = () => {
       }
       if (stockErrors.length > 0) {
         alert(
-          "بعض المنتجات غير متوفرة بالكمية المطلوبة:\n" + stockErrors.join("\n")
+          "بعض الأقمشة غير متوفرة بالكمية المطلوبة:\n" + stockErrors.join("\n")
         );
         setTamaraProcessing(false);
         return;
@@ -478,7 +467,7 @@ const Checkout: React.FC = () => {
       }
       if (stockErrors.length > 0) {
         alert(
-          "بعض المنتجات غير متوفرة بالكمية المطلوبة:\n" + stockErrors.join("\n")
+          "بعض الأقمشة غير متوفرة بالكمية المطلوبة:\n" + stockErrors.join("\n")
         );
         setTabbyProcessing(false);
         return;
@@ -626,7 +615,7 @@ const Checkout: React.FC = () => {
       }
       if (stockErrors.length > 0) {
         showToast(
-          "بعض المنتجات غير متوفرة بالكمية المطلوبة:\n" +
+          "بعض الأقمشة غير متوفرة بالكمية المطلوبة:\n" +
             stockErrors.join("\n"),
           "error"
         );
@@ -709,7 +698,7 @@ const Checkout: React.FC = () => {
       }
       if (stockErrors.length > 0) {
         showToast(
-          "بعض المنتجات غير متوفرة بالكمية المطلوبة:\n" +
+          "بعض الأقمشة غير متوفرة بالكمية المطلوبة:\n" +
             stockErrors.join("\n"),
           "error"
         );
@@ -792,7 +781,6 @@ const Checkout: React.FC = () => {
         <div className="checkout-page">
           <div className="container">
             <div className="login-required">
-              <AlertCircle size={60} />
               <h2>يجب تسجيل الدخول أولاً</h2>
               <p>قم بتسجيل الدخول لإتمام عملية الشراء</p>
               <Link to="/login" className="btn btn-primary btn-lg">
@@ -817,7 +805,7 @@ const Checkout: React.FC = () => {
               className={`step ${step >= 1 ? "active" : ""} ${step > 1 ? "completed" : ""}`}
             >
               <span className="step-number">
-                {step > 1 ? <Check size={16} /> : "1"}
+                {step > 1 ? <></> : "1"}
               </span>
               <span className="step-label">العنوان</span>
             </div>
@@ -826,7 +814,7 @@ const Checkout: React.FC = () => {
               className={`step ${step >= 2 ? "active" : ""} ${step > 2 ? "completed" : ""}`}
             >
               <span className="step-number">
-                {step > 2 ? <Check size={16} /> : "2"}
+                {step > 2 ? <></> : "2"}
               </span>
               <span className="step-label">الدفع</span>
             </div>
@@ -844,7 +832,6 @@ const Checkout: React.FC = () => {
                 <div className="checkout-form">
                   <div className="form-card">
                     <div className="card-header">
-                      <MapPin size={22} />
                       <h2>عنوان التوصيل</h2>
                     </div>
                     <div className="form-body">
@@ -989,7 +976,6 @@ const Checkout: React.FC = () => {
 
                   <div className="form-actions">
                     <Link to="/cart" className="btn btn-outline">
-                      <ArrowRight size={18} />
                       العودة للسلة
                     </Link>
                     <button
@@ -1007,7 +993,6 @@ const Checkout: React.FC = () => {
                 <div className="checkout-form">
                   <div className="form-card">
                     <div className="card-header">
-                      <CreditCard size={22} />
                       <h2>طريقة الدفع</h2>
                     </div>
                     <div className="form-body">
@@ -1029,13 +1014,6 @@ const Checkout: React.FC = () => {
                                 }
                               />
                               <div className="option-content">
-                                {method.id === "cash" && <Truck size={24} />}
-                                {method.id === "bank" && (
-                                  <CreditCard size={24} />
-                                )}
-                                {method.id === "card" && (
-                                  <CreditCard size={24} />
-                                )}
                                 {method.id === "tamara" && (
                                   <img 
                                     src="https://cdn.tamara.co/assets/svg/tamara-logo-badge-ar.svg" 
@@ -1141,12 +1119,10 @@ const Checkout: React.FC = () => {
                           >
                             {tamaraProcessing ? (
                               <>
-                                <Loader className="spinner" size={18} />
                                 جاري التحويل لتمارا...
                               </>
                             ) : (
                               <>
-                                <Clock size={18} />
                                 الدفع عبر تمارا - {formatPrice(total)}
                               </>
                             )}
@@ -1192,12 +1168,10 @@ const Checkout: React.FC = () => {
                           >
                             {tabbyProcessing ? (
                               <>
-                                <Loader className="spinner" size={18} />
                                 جاري التحويل لتابي...
                               </>
                             ) : (
                               <>
-                                <Clock size={18} />
                                 الدفع عبر تابي - {formatPrice(total)}
                               </>
                             )}
@@ -1213,7 +1187,6 @@ const Checkout: React.FC = () => {
                       onClick={() => setStep(1)}
                       disabled={cardProcessing || tamaraProcessing || tabbyProcessing}
                     >
-                      <ArrowRight size={18} />
                       السابق
                     </button>
                     {formData.paymentMethod !== "card" && formData.paymentMethod !== "tamara" && formData.paymentMethod !== "tabby" && (
@@ -1224,7 +1197,6 @@ const Checkout: React.FC = () => {
                       >
                         {loading ? (
                           <>
-                          <Loader className="spinner" size={18} />
                           جاري إرسال الطلب...
                         </>
                       ) : (
@@ -1278,7 +1250,6 @@ const Checkout: React.FC = () => {
                   </div>
                 </div>
                 <div className="shipping-info">
-                  <Truck size={18} />
                   <span>
                     التوصيل خلال {shippingSettings.estimatedDays} أيام عمل
                   </span>
@@ -1291,7 +1262,6 @@ const Checkout: React.FC = () => {
           {step === 3 && (
             <div className="order-success">
               <div className="success-icon">
-                <Check size={60} />
               </div>
               <h1>تم استلام طلبك بنجاح!</h1>
               {paidWithTamara && (
@@ -1316,7 +1286,6 @@ const Checkout: React.FC = () => {
 
               <div className="order-actions">
                 <Link to="/account" className="btn btn-primary">
-                  <ShoppingBag size={18} />
                   تتبع طلباتي
                 </Link>
                 <Link to="/products" className="btn btn-outline">
