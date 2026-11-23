@@ -2,7 +2,7 @@
 
 .footer {
   margin-top: 0;
-  background: var(--forest-deep);
+  background: var(--espresso);
 }
 
 /* ---------- شريط الخدمة ---------- */
@@ -14,7 +14,7 @@
   padding-block: 30px;
   font-size: 14px;
   line-height: 1.8;
-  color: #9faea3;
+  color: #b5a699;
   max-width: 70ch;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .footer-line {
-  color: var(--amber) !important;
+  color: var(--camel) !important;
 }
 
 @media (max-width: 992px) {

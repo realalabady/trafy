@@ -22,20 +22,20 @@ const FAMILIES = [
   {
     label: "القطن",
     weight: "١٤٠ إلى ١٨٠ غ",
-    image: "/images/fabric-cotton.jpg",
+    image: "/images/fabric-beige.jpg",
     to: "/products?search=قطن",
   },
   {
     label: "السادة",
     weight: "كل المواسم",
-    image: "/images/fabric-beige.jpg",
+    image: "/images/fabric-stripe.jpg",
     to: "/products?search=سادة",
   },
   {
-    label: "المقلّم",
-    weight: "تقليم ناعم",
-    image: "/images/fabric-stripe.jpg",
-    to: "/products?search=مقلم",
+    label: "الكحلي",
+    weight: "شتوي ثقيل",
+    image: "/images/fabric-cotton.jpg",
+    to: "/products?search=كحلي",
   },
   {
     label: "خيوط البشت",

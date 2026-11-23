@@ -6,55 +6,64 @@
 
 :root {
   /* ============================================================
-     لوحة "الغابة": أخضر عميق + عظمي + كهرماني.
-     تُركت لوحة البيج/النحاس/البنّي عمداً — هي اللوحة الافتراضية
-     التي يصل إليها كل متجر "فاخر"، وتجعل العلامة بلا وجه.
-     لهجة واحدة فقط (الكهرماني) تتكرر في الصفحة كلها.
+     لوحة بنّية دافئة على نهج سوق الأقمشة الرجالية في السعودية:
+     كاكاو وجمَلي وعاجي. مأخوذة من مرجع العميل (رحال) لا من ذوق عام.
+     لهجة واحدة (الجمَلي) تتكرر في الصفحة كلها.
      ============================================================ */
 
   /* الأسطح الفاتحة */
-  --bone: #f1eee6;
-  --bone-deep: #e7e3d8;
+  --cream: #fffdf9;
+  --ivory: #f7f2ea;
+  --sand: #efe7db;
   --paper: #ffffff;
 
-  /* الأسطح الداكنة — أقسام كاملة، لا مجرد نص */
-  --forest: #16281f;
-  --forest-deep: #0d1813;
-  --forest-soft: #273b31;
+  /* الأسطح الداكنة */
+  --cocoa: #5a3a29;
+  --cocoa-deep: #3b2a20;
+  --espresso: #1f1915;
 
   /* الحبر */
-  --ink: #1a1f1b;
-  --ink-soft: #596056;
-  --ink-faint: #8d948b;
-  --line: #dcd8cc;
-  --line-soft: #e8e4da;
+  --ink: #1f1915;
+  --ink-soft: #6f6358;
+  --ink-faint: #9b9087;
+  --line: rgba(31, 25, 21, 0.14);
+  --line-soft: rgba(31, 25, 21, 0.08);
 
   /* اللهجة الوحيدة */
-  --amber: #c8761a;
-  --amber-soft: #e9b97a;
+  --camel: #c2a27c;
+  --cashmere: #d8c2a3;
 
-  /* الحالات */
-  --sale: #9b3124;
-  --ok: #3f6b4a;
+  /* ثقل بارد للخط الشتوي، وحالات */
+  --midnight: #1e2a36;
+  --oxblood: #7a2f25;
+  --ok: #4f6b4a;
 
-  /* أسماء قديمة تستعملها لوحة التحكم وبقية الصفحات */
-  --bg: var(--bone);
+  /* أسماء سابقة لا تزال مستعملة في بقية الصفحات ولوحة التحكم */
+  --bone: var(--ivory);
+  --bone-deep: var(--sand);
+  --bg: var(--ivory);
   --surface: var(--paper);
-  --mid: #a9a697;
-  --primary: var(--forest);
-  --primary-dark: var(--forest-deep);
-  --oud: var(--forest);
-  --oud-deep: var(--forest-deep);
-  --brass: var(--amber);
-  --indigo: var(--forest-soft);
-  --accent-blue: var(--forest-soft);
+  --mid: #b3a897;
+  --primary: var(--cocoa);
+  --primary-dark: var(--cocoa-deep);
+  --forest: var(--cocoa);
+  --forest-deep: var(--espresso);
+  --forest-soft: #6d4a35;
+  --amber: var(--camel);
+  --amber-soft: var(--cashmere);
+  --oud: var(--cocoa);
+  --oud-deep: var(--cocoa-deep);
+  --brass: var(--camel);
+  --indigo: var(--midnight);
+  --accent-blue: var(--midnight);
   --accent-green: var(--ok);
-  --danger: var(--sale);
-  --secondary: var(--forest-soft);
+  --danger: var(--oxblood);
+  --sale: var(--oxblood);
+  --secondary: var(--midnight);
   --success: var(--ok);
-  --warning: var(--amber);
+  --warning: var(--camel);
   --dark: var(--ink);
-  --light: var(--bone);
+  --light: var(--ivory);
   --gray: var(--ink-soft);
   --border: var(--line);
 
@@ -68,23 +77,21 @@
   --gutter: 24px;
   --section: 104px;
 
-  /* زوايا: نظام واحد */
   --radius-sm: 4px;
   --radius: 8px;
   --radius-lg: 14px;
 
-  /* ظلال مائلة للون الخلفية، بلا أسود صافٍ */
-  --shadow-sm: 0 1px 2px rgba(22, 40, 31, 0.04);
-  --shadow-md: 0 4px 18px rgba(22, 40, 31, 0.07);
-  --shadow-lg: 0 18px 50px rgba(22, 40, 31, 0.1);
+  --shadow-sm: 0 1px 2px rgba(31, 25, 21, 0.04);
+  --shadow-md: 0 4px 18px rgba(31, 25, 21, 0.07);
+  --shadow-lg: 0 18px 50px rgba(31, 25, 21, 0.1);
   --shadow-primary: var(--shadow-md);
   --shadow-success: var(--shadow-md);
   --shadow-danger: var(--shadow-md);
 
-  --gradient-primary: var(--forest);
+  --gradient-primary: var(--cocoa);
   --gradient-success: var(--ok);
-  --gradient-danger: var(--sale);
-  --gradient-gold: var(--amber);
+  --gradient-danger: var(--oxblood);
+  --gradient-gold: var(--camel);
   --gradient-dark: var(--ink);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -102,7 +109,7 @@ html {
 
 body {
   font-family: var(--sans);
-  background-color: var(--bone);
+  background-color: var(--cream);
   color: var(--ink);
   direction: rtl;
   font-size: 16px;
@@ -752,40 +759,43 @@ textarea {
    المكوّنات نفسها تعمل داخل الفاتح والداكن.
    ============================================ */
 .band {
-  background: var(--forest);
-  color: var(--bone);
-  --ink: #f1eee6;
-  --ink-soft: #b3bdb4;
-  --line: rgba(241, 238, 230, 0.16);
-  --line-soft: rgba(241, 238, 230, 0.1);
-  --paper: var(--forest-soft);
-  --bone: #16281f;
-  --bone-deep: #0d1813;
-  --mid: #7c8a7f;
+  background: var(--cocoa);
+  color: var(--ivory);
+  --ink: #f7f2ea;
+  --ink-soft: #d3c3b2;
+  --line: rgba(247, 242, 234, 0.18);
+  --line-soft: rgba(247, 242, 234, 0.1);
+  --paper: #6d4a35;
+  --cream: #5a3a29;
+  --ivory: #5a3a29;
+  --bone: #5a3a29;
+  --sand: #3b2a20;
+  --bone-deep: #3b2a20;
+  --mid: #a98f77;
 }
 
 .band h1,
 .band h2,
 .band h3 {
-  color: #f1eee6;
+  color: #fffdf9;
 }
 
 .band .btn-primary {
-  background: var(--amber);
-  color: #16281f;
+  background: var(--camel);
+  color: #1f1915;
 }
 
 .band .btn-primary:hover {
-  background: #e08a28;
+  background: var(--cashmere);
 }
 
 .band .btn-secondary {
-  border-color: rgba(241, 238, 230, 0.32);
-  color: #f1eee6;
+  border-color: rgba(247, 242, 234, 0.34);
+  color: #f7f2ea;
 }
 
 .band .btn-secondary:hover {
-  border-color: #f1eee6;
+  border-color: #f7f2ea;
 }
 
 /* شريط الحافة الكاملة */

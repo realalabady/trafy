@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(241, 238, 230, 0.86);
+  background: rgba(255, 253, 249, 0.86);
   backdrop-filter: saturate(150%) blur(14px);
   -webkit-backdrop-filter: saturate(150%) blur(14px);
   border-bottom: 1px solid var(--line);
@@ -46,7 +46,7 @@
   inset-inline: 0;
   bottom: 0;
   height: 1px;
-  background: var(--amber);
+  background: var(--camel);
   transform: scaleX(0);
   transform-origin: inline-end;
   transition: transform 280ms var(--ease);
@@ -72,8 +72,8 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--bone);
-  background: var(--forest);
+  color: var(--ivory);
+  background: var(--cocoa);
   padding: 9px 18px;
   border-radius: 999px;
   transition: background 200ms var(--ease);
@@ -81,14 +81,14 @@
 }
 
 .bar-cart:hover {
-  background: var(--forest-deep);
+  background: var(--espresso);
 }
 
 .bar-count {
   font-family: var(--mono);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  color: var(--amber);
+  color: var(--camel);
 }
 
 .bar-burger {
@@ -111,7 +111,7 @@
 .search-scrim {
   position: absolute;
   inset: 0;
-  background: rgba(13, 24, 19, 0.42);
+  background: rgba(31, 25, 21, 0.44);
   border: none;
   cursor: default;
   z-index: 0;
@@ -120,7 +120,7 @@
 .search-panel {
   position: relative;
   z-index: 1;
-  background: var(--bone);
+  background: var(--cream);
   border-bottom: 1px solid var(--line);
 }
 
@@ -145,7 +145,7 @@
 
 .search-panel input:focus {
   outline: none;
-  border-color: var(--amber);
+  border-color: var(--camel);
 }
 
 .search-panel input::placeholder {
@@ -167,7 +167,7 @@
 /* ---------- درج الجوال ---------- */
 .drawer {
   overflow: hidden;
-  background: var(--bone);
+  background: var(--cream);
   border-bottom: 1px solid var(--line);
 }
 
