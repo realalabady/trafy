@@ -27,9 +27,9 @@
 .hero-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1672 / 941;
-  min-height: 380px;
-  max-height: 78vh;
+  aspect-ratio: 2 / 1;
+  min-height: 420px;
+  max-height: 74vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -338,10 +338,13 @@
    الجوال
    ============================================ */
 @media (max-width: 980px) {
+  /* العمل الفني مربّع: نعرضه كاملاً على الجوال بدل قصّ الشعار في منتصف
+     الكلمة. الأزرار تجلس على الأرضية الفارغة أسفل الصورة. */
   .hero-stage {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
+    min-height: 0;
     max-height: none;
-    padding-bottom: 56px;
+    padding-bottom: 46px;
   }
 
   /* قصّة رأسية ضيّقة: نحتاج نقطة تركيز أخرى وإلا خرج الرجل من الكادر */

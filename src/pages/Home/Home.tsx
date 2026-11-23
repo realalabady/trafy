@@ -9,31 +9,17 @@ import "./Home.css";
 const SLIDES = [
   {
     image: "/images/brand-walk.jpg",
-    position: "50% 50%",
-    positionMobile: "36% 55%",
+    position: "50% 38%",
+    positionMobile: "50% 50%",
     alt: "ثوب بنّي من صوف شتوي",
     caption: "صوف شتوي · ٤٢٠ غ",
   },
   {
     image: "/images/brand-arch.jpg",
-    position: "50% 50%",
-    positionMobile: "32% 50%",
+    position: "50% 40%",
+    positionMobile: "50% 50%",
     alt: "ثوب عاجي أمام مشهد جبلي",
     caption: "قطن مصري · ١٦٠ غ",
-  },
-  {
-    image: "/images/brand-sit.jpg",
-    position: "50% 50%",
-    positionMobile: "34% 55%",
-    alt: "ثوب عاجي في جلسة خارجية",
-    caption: "كتّان صيفي · ١٤٠ غ",
-  },
-  {
-    image: "/images/brand-stairs.jpg",
-    position: "50% 50%",
-    positionMobile: "44% 50%",
-    alt: "ثوب أبيض على درج حجري",
-    caption: "سادة واقف · ٢٢٠ غ",
   },
 ];
 
