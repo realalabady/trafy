@@ -27,9 +27,11 @@
 .hero-stage {
   position: relative;
   width: 100%;
-  min-height: clamp(460px, 64vh, 680px);
+  aspect-ratio: 1672 / 941;
+  min-height: 380px;
+  max-height: 78vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   overflow: hidden;
   background: var(--sand);
 }
@@ -48,11 +50,11 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to left,
-    rgba(245, 239, 228, 0.92) 0%,
-    rgba(245, 239, 228, 0.72) 26%,
-    rgba(245, 239, 228, 0.18) 52%,
-    rgba(245, 239, 228, 0) 72%
+    to top,
+    rgba(238, 228, 211, 0.94) 0%,
+    rgba(238, 228, 211, 0.74) 18%,
+    rgba(238, 228, 211, 0.2) 38%,
+    rgba(238, 228, 211, 0) 56%
   );
   pointer-events: none;
 }
@@ -61,6 +63,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
+  padding-bottom: 60px;
 }
 
 /* بالبكسل لا بـ ch: الوحدة ch تُحسب على حجم خط العنصر نفسه (16px) لا على
@@ -76,10 +79,10 @@
 }
 
 .hero-title {
-  font-size: clamp(2.6rem, 5.6vw, 4.6rem);
-  line-height: 1.06;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  line-height: 1.08;
   color: var(--chestnut);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   max-width: 13ch;
 }
 
@@ -94,7 +97,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 28px;
 }
 
 .hero-foot {
@@ -337,9 +339,9 @@
    ============================================ */
 @media (max-width: 980px) {
   .hero-stage {
-    min-height: 74vh;
-    align-items: flex-end;
-    padding-bottom: 72px;
+    aspect-ratio: 4 / 5;
+    max-height: none;
+    padding-bottom: 56px;
   }
 
   /* قصّة رأسية ضيّقة: نحتاج نقطة تركيز أخرى وإلا خرج الرجل من الكادر */

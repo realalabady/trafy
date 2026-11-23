@@ -8,18 +8,32 @@ import "./Home.css";
 /** شرائح الواجهة: صور العميل بعد قص علامة المرجع ونص حملته. */
 const SLIDES = [
   {
-    image: "/images/hero-walk-wide.jpg",
-    position: "28% 50%",
-    positionMobile: "19% 45%",
-    alt: "ثوب شتوي فحمي في ضوء النهار",
+    image: "/images/brand-walk.jpg",
+    position: "50% 50%",
+    positionMobile: "36% 55%",
+    alt: "ثوب بنّي من صوف شتوي",
     caption: "صوف شتوي · ٤٢٠ غ",
   },
   {
-    image: "/images/hero-thobe.jpg",
-    position: "50% 22%",
-    positionMobile: "52% 16%",
-    alt: "ثوب أبيض بوقفة كاملة",
+    image: "/images/brand-arch.jpg",
+    position: "50% 50%",
+    positionMobile: "32% 50%",
+    alt: "ثوب عاجي أمام مشهد جبلي",
     caption: "قطن مصري · ١٦٠ غ",
+  },
+  {
+    image: "/images/brand-sit.jpg",
+    position: "50% 50%",
+    positionMobile: "34% 55%",
+    alt: "ثوب عاجي في جلسة خارجية",
+    caption: "كتّان صيفي · ١٤٠ غ",
+  },
+  {
+    image: "/images/brand-stairs.jpg",
+    position: "50% 50%",
+    positionMobile: "44% 50%",
+    alt: "ثوب أبيض على درج حجري",
+    caption: "سادة واقف · ٢٢٠ غ",
   },
 ];
 
@@ -127,11 +141,9 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease }}
             >
-              <span className="meta hero-eyebrow">بيت أقمشة رجالية</span>
-              <h1 className="display hero-title">قماشٌ يعرف وقفته</h1>
-              <p className="hero-lede">
-                وزن بالغرام، درجة وقفة، بلد نسج. مكتوبة قبل الشراء لا بعده.
-              </p>
+              {/* الشعار واسم العلامة مطبوعان داخل الصورة نفسها، فعنوان ثانٍ
+                  فوقهما يزدحم بهما. يبقى العنوان للقارئ الآلي وقارئ الشاشة. */}
+              <h1 className="sr-only">ترفي · قماشٌ يعرف وقفته</h1>
               <div className="hero-buttons">
                 <Link to="/products" className="btn btn-primary btn-lg">
                   تصفّح الأقمشة
