@@ -8,17 +8,16 @@ import "./Home.css";
 /** شرائح الواجهة: صور العميل بعد قص علامة المرجع ونص حملته. */
 const SLIDES = [
   {
-    image: "/images/hero-walk.jpg",
-    alt: "ثوب شتوي بلون فحمي في ضوء النهار",
+    image: "/images/hero-walk-wide.jpg",
+    position: "28% 50%",
+    positionMobile: "19% 45%",
+    alt: "ثوب شتوي فحمي في ضوء النهار",
     caption: "صوف شتوي · ٤٢٠ غ",
   },
   {
-    image: "/images/hero-sofa.jpg",
-    alt: "ثوب أسود معلّق وطيّات ملوّنة بجانبه",
-    caption: "مجموعة الشتاء · وقفة كاملة",
-  },
-  {
     image: "/images/hero-thobe.jpg",
+    position: "50% 22%",
+    positionMobile: "52% 16%",
     alt: "ثوب أبيض بوقفة كاملة",
     caption: "قطن مصري · ١٦٠ غ",
   },
@@ -98,77 +97,67 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
-      {/* ١. الواجهة: صور تتبدّل */}
-      <section className="hero band">
-        <div className="container hero-grid">
-          <div className="hero-text">
-            <motion.span
-              className="meta hero-eyebrow"
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease }}
-            >
-              بيت أقمشة رجالية
-            </motion.span>
-            <motion.h1
-              className="display hero-title"
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.05, ease }}
-            >
-              قماشٌ يعرف وقفته
-            </motion.h1>
-            <motion.p
-              className="hero-lede"
-              initial={reduce ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.12, ease }}
-            >
-              وزن بالغرام، درجة وقفة، بلد نسج. مكتوبة قبل الشراء لا بعده.
-            </motion.p>
+      {/* ١. الواجهة: صورة كاملة العرض، النص فوقها */}
+      <section className="hero">
+        <div className="hero-stage">
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={current.image}
+              src={current.image}
+              alt={current.alt}
+              className="hero-img"
+              style={
+                {
+                  "--pos": current.position,
+                  "--pos-m": current.positionMobile,
+                } as React.CSSProperties
+              }
+              initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 1.2, ease }}
+            />
+          </AnimatePresence>
+          <div className="hero-scrim" />
+
+          <div className="container hero-inner">
             <motion.div
-              className="hero-buttons"
-              initial={reduce ? false : { opacity: 0, y: 12 }}
+              className="hero-text"
+              initial={reduce ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease }}
+              transition={{ duration: 0.8, ease }}
             >
-              <Link to="/products" className="btn btn-primary btn-lg">
-                تصفّح الأقمشة
-              </Link>
-              <Link to="/products?search=صوف" className="btn btn-secondary btn-lg">
-                أصواف الشتاء
-              </Link>
+              <span className="meta hero-eyebrow">بيت أقمشة رجالية</span>
+              <h1 className="display hero-title">قماشٌ يعرف وقفته</h1>
+              <p className="hero-lede">
+                وزن بالغرام، درجة وقفة، بلد نسج. مكتوبة قبل الشراء لا بعده.
+              </p>
+              <div className="hero-buttons">
+                <Link to="/products" className="btn btn-primary btn-lg">
+                  تصفّح الأقمشة
+                </Link>
+                <Link
+                  to="/products?search=صوف"
+                  className="btn btn-outline btn-lg"
+                >
+                  أصواف الشتاء
+                </Link>
+              </div>
             </motion.div>
           </div>
 
-          <div className="hero-media">
-            <div className="hero-stage">
-              <AnimatePresence mode="sync">
-                <motion.img
-                  key={current.image}
-                  src={current.image}
-                  alt={current.alt}
-                  className="hero-slide"
-                  initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: reduce ? 0 : 1.1, ease }}
+          <div className="container hero-foot">
+            <span className="meta hero-caption">{current.caption}</span>
+            <div className="hero-dots">
+              {SLIDES.map((s, i) => (
+                <button
+                  key={s.image}
+                  className={`hero-dot ${i === slide ? "is-on" : ""}`}
+                  aria-label={`الشريحة ${i + 1}`}
+                  aria-current={i === slide}
+                  onClick={() => setSlide(i)}
                 />
-              </AnimatePresence>
-            </div>
-            <div className="hero-foot">
-              <span className="meta hero-caption">{current.caption}</span>
-              <div className="hero-dots">
-                {SLIDES.map((s, i) => (
-                  <button
-                    key={s.image}
-                    className={`hero-dot ${i === slide ? "is-on" : ""}`}
-                    aria-label={`الشريحة ${i + 1}`}
-                    aria-current={i === slide}
-                    onClick={() => setSlide(i)}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
