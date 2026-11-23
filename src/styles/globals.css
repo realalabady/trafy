@@ -6,92 +6,88 @@
 
 :root {
   /* ============================================================
-     لوحة بنّية دافئة على نهج سوق الأقمشة الرجالية في السعودية:
-     كاكاو وجمَلي وعاجي. مأخوذة من مرجع العميل (رحال) لا من ذوق عام.
-     لهجة واحدة (الجمَلي) تتكرر في الصفحة كلها.
+     لوحة العميل: كستنائي، كراميل، زيتوني، قمحي.
+     أربعة ألوان فقط تحمل الصفحة، مع عاجي فاتح للأسطح.
      ============================================================ */
+  --chestnut: #622b14;
+  --caramel: #995f2f;
+  --olive: #978f66;
+  --wheat: #e4d6a9;
 
-  /* الأسطح الفاتحة */
-  --cream: #fffdf9;
-  --ivory: #f7f2ea;
-  --sand: #efe7db;
+  /* الأسطح */
+  --cream: #fbf8f2;
+  --ivory: #f5efe4;
+  --sand: #ece3d2;
   --paper: #ffffff;
 
-  /* الأسطح الداكنة */
-  --cocoa: #5a3a29;
-  --cocoa-deep: #3b2a20;
-  --espresso: #1f1915;
-
   /* الحبر */
-  --ink: #1f1915;
-  --ink-soft: #6f6358;
-  --ink-faint: #9b9087;
-  --line: rgba(31, 25, 21, 0.14);
-  --line-soft: rgba(31, 25, 21, 0.08);
+  --ink: #2a1a10;
+  --ink-soft: #6d5c4c;
+  --ink-faint: #9b8a79;
+  --line: rgba(42, 26, 16, 0.14);
+  --line-soft: rgba(42, 26, 16, 0.08);
 
-  /* اللهجة الوحيدة */
-  --camel: #c2a27c;
-  --cashmere: #d8c2a3;
-
-  /* ثقل بارد للخط الشتوي، وحالات */
-  --midnight: #1e2a36;
   --oxblood: #7a2f25;
-  --ok: #4f6b4a;
+  --ok: #5d6b45;
 
   /* أسماء سابقة لا تزال مستعملة في بقية الصفحات ولوحة التحكم */
+  --cocoa: var(--chestnut);
+  --cocoa-deep: #4a2010;
+  --espresso: #2a1a10;
+  --camel: var(--caramel);
+  --cashmere: var(--wheat);
   --bone: var(--ivory);
   --bone-deep: var(--sand);
-  --bg: var(--ivory);
+  --bg: var(--cream);
   --surface: var(--paper);
-  --mid: #b3a897;
-  --primary: var(--cocoa);
-  --primary-dark: var(--cocoa-deep);
-  --forest: var(--cocoa);
-  --forest-deep: var(--espresso);
-  --forest-soft: #6d4a35;
-  --amber: var(--camel);
-  --amber-soft: var(--cashmere);
-  --oud: var(--cocoa);
-  --oud-deep: var(--cocoa-deep);
-  --brass: var(--camel);
-  --indigo: var(--midnight);
-  --accent-blue: var(--midnight);
+  --mid: #b9a98f;
+  --primary: var(--chestnut);
+  --primary-dark: #4a2010;
+  --forest: var(--chestnut);
+  --forest-deep: #2a1a10;
+  --forest-soft: var(--caramel);
+  --amber: var(--caramel);
+  --amber-soft: var(--wheat);
+  --oud: var(--chestnut);
+  --oud-deep: #4a2010;
+  --brass: var(--caramel);
+  --midnight: #2a1a10;
+  --indigo: var(--olive);
+  --accent-blue: var(--olive);
   --accent-green: var(--ok);
   --danger: var(--oxblood);
   --sale: var(--oxblood);
-  --secondary: var(--midnight);
+  --secondary: var(--olive);
   --success: var(--ok);
-  --warning: var(--camel);
+  --warning: var(--caramel);
   --dark: var(--ink);
-  --light: var(--ivory);
+  --light: var(--cream);
   --gray: var(--ink-soft);
   --border: var(--line);
 
-  /* الخطوط */
   --display: "Amiri", "Noto Naskh Arabic", Georgia, serif;
   --sans: "IBM Plex Sans Arabic", "SF Pro Display", "Helvetica Neue", sans-serif;
   --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
 
-  /* الإيقاع */
   --measure: 1320px;
   --gutter: 24px;
-  --section: 104px;
+  --section: 96px;
 
   --radius-sm: 4px;
   --radius: 8px;
   --radius-lg: 14px;
 
-  --shadow-sm: 0 1px 2px rgba(31, 25, 21, 0.04);
-  --shadow-md: 0 4px 18px rgba(31, 25, 21, 0.07);
-  --shadow-lg: 0 18px 50px rgba(31, 25, 21, 0.1);
+  --shadow-sm: 0 1px 2px rgba(42, 26, 16, 0.04);
+  --shadow-md: 0 4px 18px rgba(42, 26, 16, 0.07);
+  --shadow-lg: 0 18px 50px rgba(42, 26, 16, 0.1);
   --shadow-primary: var(--shadow-md);
   --shadow-success: var(--shadow-md);
   --shadow-danger: var(--shadow-md);
 
-  --gradient-primary: var(--cocoa);
+  --gradient-primary: var(--chestnut);
   --gradient-success: var(--ok);
   --gradient-danger: var(--oxblood);
-  --gradient-gold: var(--camel);
+  --gradient-gold: var(--caramel);
   --gradient-dark: var(--ink);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -759,43 +755,51 @@ textarea {
    المكوّنات نفسها تعمل داخل الفاتح والداكن.
    ============================================ */
 .band {
-  background: var(--cocoa);
-  color: var(--ivory);
-  --ink: #f7f2ea;
-  --ink-soft: #d3c3b2;
-  --line: rgba(247, 242, 234, 0.18);
-  --line-soft: rgba(247, 242, 234, 0.1);
-  --paper: #6d4a35;
-  --cream: #5a3a29;
-  --ivory: #5a3a29;
-  --bone: #5a3a29;
-  --sand: #3b2a20;
-  --bone-deep: #3b2a20;
-  --mid: #a98f77;
+  background: var(--chestnut);
+  color: var(--wheat);
+  --ink: #f6eedd;
+  --ink-soft: #d9c9a8;
+  --line: rgba(228, 214, 169, 0.22);
+  --line-soft: rgba(228, 214, 169, 0.12);
+  --paper: var(--caramel);
+  --cream: var(--chestnut);
+  --ivory: var(--chestnut);
+  --bone: var(--chestnut);
+  --sand: #4a2010;
+  --bone-deep: #4a2010;
+  --mid: #b79a74;
+}
+
+.band-caramel {
+  background: var(--caramel);
+  --cream: var(--caramel);
+  --ivory: var(--caramel);
+  --bone: var(--caramel);
+  --paper: #a96d39;
 }
 
 .band h1,
 .band h2,
 .band h3 {
-  color: #fffdf9;
+  color: var(--wheat);
 }
 
 .band .btn-primary {
-  background: var(--camel);
-  color: #1f1915;
+  background: var(--wheat);
+  color: var(--chestnut);
 }
 
 .band .btn-primary:hover {
-  background: var(--cashmere);
+  background: #f0e6c4;
 }
 
 .band .btn-secondary {
-  border-color: rgba(247, 242, 234, 0.34);
-  color: #f7f2ea;
+  border-color: rgba(228, 214, 169, 0.4);
+  color: var(--wheat);
 }
 
 .band .btn-secondary:hover {
-  border-color: #f7f2ea;
+  border-color: var(--wheat);
 }
 
 /* شريط الحافة الكاملة */
