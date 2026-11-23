@@ -25,43 +25,20 @@ const SLIDES = [
 
 /** التصنيفات كما تُعرض في سوق الأقمشة: الرجل لابساً القماش، لا عيّنة مجرّدة. */
 const CATEGORIES = [
-  { label: "الصوف", image: "/images/cat-wool.jpg", to: "/products?search=صوف" },
-  { label: "السادة", image: "/images/cat-plain.jpg", to: "/products?search=سادة" },
-  { label: "المقلّم", image: "/images/cat-striped.jpg", to: "/products?search=مقلم" },
-  { label: "الكاروهات", image: "/images/cat-check.jpg", to: "/products?search=كاروهات" },
-  { label: "القطن الطبيعي", image: "/images/cat-cotton.jpg", to: "/products?search=قطن" },
+  { label: "الصوف", image: "/images/fabric-wool.jpg", to: "/products?search=صوف" },
+  { label: "القطن", image: "/images/fabric-beige.jpg", to: "/products?search=قطن" },
+  { label: "السادة", image: "/images/fabric-stripe.jpg", to: "/products?search=سادة" },
+  { label: "الكحلي", image: "/images/fabric-cotton.jpg", to: "/products?search=كحلي" },
+  { label: "خيوط البشت", image: "/images/fabric-grey.jpg", to: "/products?search=بشت" },
 ];
 
 const STANCES = [
-  {
-    name: "واقف",
-    note: "يمسك شكله كاملاً. للمناسبات.",
-    image: "/images/stance-standing.jpg",
-  },
-  {
-    name: "نصف وقفة",
-    note: "بين الوقوف والانسدال. اليومي.",
-    image: "/images/stance-half.jpg",
-  },
-  {
-    name: "ربع وقفة",
-    note: "خفيف الوقوف، مريح في الحر.",
-    image: "/images/stance-quarter.jpg",
-  },
-  {
-    name: "منسدل",
-    note: "ينساب مع الحركة. للسفر.",
-    image: "/images/stance-draped.jpg",
-  },
+  { name: "واقف", note: "يمسك شكله كاملاً. للمناسبات." },
+  { name: "نصف وقفة", note: "بين الوقوف والانسدال. اليومي." },
+  { name: "ربع وقفة", note: "خفيف الوقوف، مريح في الحر." },
+  { name: "منسدل", note: "ينساب مع الحركة. للسفر." },
 ];
 
-const FABRICS = [
-  { label: "صوف مارينو", note: "٤٨٠ غ", image: "/images/fabric-wool.jpg", wide: true },
-  { label: "قطن مصري", note: "١٦٠ غ", image: "/images/fabric-beige.jpg" },
-  { label: "تويل سادة", note: "٢٢٠ غ", image: "/images/fabric-stripe.jpg" },
-  { label: "كحلي شتوي", note: "٣٨٠ غ", image: "/images/fabric-cotton.jpg" },
-  { label: "خيوط البشت", note: "١٤٠ غ", image: "/images/fabric-grey.jpg" },
-];
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 const SLIDE_MS = 5000;
@@ -120,30 +97,6 @@ const Home: React.FC = () => {
           </AnimatePresence>
           <div className="hero-scrim" />
 
-          <div className="container hero-inner">
-            <motion.div
-              className="hero-text"
-              initial={reduce ? false : { opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease }}
-            >
-              {/* الشعار واسم العلامة مطبوعان داخل الصورة نفسها، فعنوان ثانٍ
-                  فوقهما يزدحم بهما. يبقى العنوان للقارئ الآلي وقارئ الشاشة. */}
-              <h1 className="sr-only">ترفي · قماشٌ يعرف وقفته</h1>
-              <div className="hero-buttons">
-                <Link to="/products" className="btn btn-primary btn-lg">
-                  تصفّح الأقمشة
-                </Link>
-                <Link
-                  to="/products?search=صوف"
-                  className="btn btn-outline btn-lg"
-                >
-                  أصواف الشتاء
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-
           <div className="container hero-foot">
             <span className="meta hero-caption">{current.caption}</span>
             <div className="hero-dots">
@@ -158,6 +111,30 @@ const Home: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+
+          <div className="container hero-inner">
+          <motion.div
+            className="hero-text"
+            initial={reduce ? false : { opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease }}
+          >
+            {/* الشعار واسم العلامة مطبوعان داخل الصورة نفسها، فعنوان ثانٍ
+                فوقهما يزدحم بهما. يبقى العنوان للقارئ الآلي وقارئ الشاشة. */}
+            <h1 className="sr-only">ترفي · قماشٌ يعرف وقفته</h1>
+            <div className="hero-buttons">
+              <Link to="/products" className="btn btn-primary btn-lg">
+                تصفّح الأقمشة
+              </Link>
+              <Link
+                to="/products?search=صوف"
+                className="btn btn-outline btn-lg"
+              >
+                أصواف الشتاء
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -185,32 +162,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ٣. الخامات */}
-      <section className="section">
-        <div className="container">
-          <motion.header className="sec-head" {...rise()}>
-            <h2 className="display">الخامات</h2>
-          </motion.header>
-          <div className="fab-grid">
-            {FABRICS.map((f, i) => (
-              <motion.div
-                key={f.label}
-                className={f.wide ? "fab fab-wide" : "fab"}
-                {...rise(i)}
-              >
-                <div className="fab-photo">
-                  <img src={f.image} alt={f.label} loading="lazy" />
-                </div>
-                <div className="fab-cap">
-                  <span className="fab-label">{f.label}</span>
-                  <span className="fab-note">{f.note}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ٤. الوقفة */}
       <section className="section band band-caramel stance">
         <div className="container">
@@ -224,9 +175,6 @@ const Home: React.FC = () => {
                   to={`/products?search=${encodeURIComponent(s.name)}`}
                   className="stance-item"
                 >
-                  <span className="stance-ring">
-                    <img src={s.image} alt={s.name} loading="lazy" />
-                  </span>
                   <span className="stance-name display">{s.name}</span>
                   <span className="stance-note">{s.note}</span>
                 </Link>
