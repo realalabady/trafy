@@ -175,6 +175,7 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
             <aside className="account-sidebar">
               <div className="user-info">
                 <div className="user-avatar">
+                  {(user.name || user.email || "م").trim().charAt(0).toUpperCase()}
                 </div>
                 <div className="user-details">
                   <h3>{user.name || "مستخدم"}</h3>

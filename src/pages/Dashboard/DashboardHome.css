@@ -274,7 +274,8 @@
   padding: 0 10px;
 }
 
-.bar {
+/* مقيّدة داخل .chart-bars: الصنف المجرّد «.bar» يخطف شريط رأس المتجر. */
+.chart-bars .bar {
   flex: 1;
   max-width: 60px;
   background: var(--line);
@@ -284,18 +285,18 @@
   cursor: pointer;
 }
 
-.bar.active {
+.chart-bars .bar.active {
   background: var(--primary);
   box-shadow: var(--shadow-sm);
 }
 
-.bar:hover {
+.chart-bars .bar:hover {
   background: var(--primary);
   box-shadow: var(--shadow-sm);
   transform: scaleY(1.02);
 }
 
-.bar span {
+.chart-bars .bar span {
   position: absolute;
   bottom: -30px;
   left: 50%;

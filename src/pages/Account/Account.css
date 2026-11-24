@@ -37,6 +37,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
 }
 
 .user-details h3 {
@@ -479,17 +484,18 @@
   .account-nav {
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
 
   .account-nav .nav-item {
-    flex: 1;
-    min-width: 100px;
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
     justify-content: center;
-    padding: 10px;
-  }
-
-  .account-nav .nav-item span {
-    display: none;
+    padding: 9px 14px;
+    font-size: 13px;
+    white-space: nowrap;
   }
 
   .account-nav .nav-item.logout {

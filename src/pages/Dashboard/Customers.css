@@ -83,7 +83,7 @@
   gap: 10px;
 }
 
-.user-avatar {
+.user-cell .user-avatar {
   width: 36px;
   height: 36px;
   background: var(--primary);
@@ -195,7 +195,7 @@
     font-size: 13px;
   }
 
-  .user-avatar {
+  .user-cell .user-avatar {
     display: none;
   }
 

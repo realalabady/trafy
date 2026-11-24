@@ -568,7 +568,8 @@
   border-color: var(--mid);
 }
 
-.user-avatar {
+/* مقيّدة داخل رأس اللوحة: الصنفان عامّان ويخطفان صفحة الحساب. */
+.dashboard-header .user-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -577,7 +578,7 @@
   object-fit: cover;
 }
 
-.user-info {
+.dashboard-header .user-info {
   display: flex;
   flex-direction: column;
 }
@@ -767,7 +768,7 @@
     font-size: 18px;
   }
 
-  .user-info {
+  .dashboard-header .user-info {
     display: none;
   }
 

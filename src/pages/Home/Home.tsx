@@ -23,14 +23,6 @@ const SLIDES = [
   },
 ];
 
-/** التصنيفات كما تُعرض في سوق الأقمشة: الرجل لابساً القماش، لا عيّنة مجرّدة. */
-const CATEGORIES = [
-  { label: "الصوف", image: "/images/fabric-wool.jpg", to: "/products?search=صوف" },
-  { label: "القطن", image: "/images/fabric-beige.jpg", to: "/products?search=قطن" },
-  { label: "السادة", image: "/images/fabric-stripe.jpg", to: "/products?search=سادة" },
-  { label: "الكحلي", image: "/images/fabric-cotton.jpg", to: "/products?search=كحلي" },
-  { label: "خيوط البشت", image: "/images/fabric-grey.jpg", to: "/products?search=بشت" },
-];
 
 const STANCES = [
   { name: "واقف", note: "يمسك شكله كاملاً. للمناسبات." },
@@ -44,7 +36,7 @@ const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 const SLIDE_MS = 5000;
 
 const Home: React.FC = () => {
-  const { products } = useStore();
+  const { products, categories } = useStore();
   const reduce = useReducedMotion();
   const [slide, setSlide] = useState(0);
 
@@ -138,29 +130,36 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ٢. التصنيفات */}
-      <section className="section-tight cats">
-        <div className="container">
-          <motion.header className="sec-head" {...rise()}>
-            <h2 className="display">تسوّق حسب القماش</h2>
-            <Link to="/products" className="section-link">
-              كل الأقمشة
-            </Link>
-          </motion.header>
-          <div className="cat-row">
-            {CATEGORIES.map((c, i) => (
-              <motion.div key={c.label} {...rise(i)}>
-                <Link to={c.to} className="cat">
-                  <span className="cat-ring">
-                    <img src={c.image} alt={c.label} loading="lazy" />
-                  </span>
-                  <span className="cat-label">{c.label}</span>
-                </Link>
-              </motion.div>
-            ))}
+      {/* ٢. التصنيفات: من قاعدة البيانات، فما يُضاف من لوحة التحكم يظهر هنا */}
+      {categories.length > 0 && (
+        <section className="section-tight cats">
+          <div className="container">
+            <motion.header className="sec-head" {...rise()}>
+              <h2 className="display">تسوّق حسب القماش</h2>
+              <Link to="/products" className="section-link">
+                كل الأقمشة
+              </Link>
+            </motion.header>
+            <div className="cat-row">
+              {categories.map((c, i) => (
+                <motion.div key={c.id} {...rise(i)}>
+                  <Link to={`/products?category=${c.id}`} className="cat">
+                    <span className="cat-ring">
+                      {c.image ? (
+                        <img src={c.image} alt={c.name} loading="lazy" />
+                      ) : (
+                        <span className="cat-blank" />
+                      )}
+                    </span>
+                    <span className="cat-label">{c.name}</span>
+                    <span className="cat-hint meta">قرّب لترى النسج</span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ٤. الوقفة */}
       <section className="section band band-caramel stance">
