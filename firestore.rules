@@ -92,6 +92,14 @@ service cloud.firestore {
                 : !request.resource.data.diff(resource.data)
                      .affectedKeys().hasAny(['paymentGateways']));
       }
+      // Legal pages content (returns / shipping / privacy / FAQ).
+      // Rendered to every visitor, so it must be publicly readable — unlike
+      // the credential-bearing settings docs covered by the rule below.
+      // Only this store's admin can edit it from the dashboard.
+      match /settings/legal {
+        allow read: if true;
+        allow write: if isStoreAdmin(storeId);
+      }
       // Any other settings doc (email, tabby, tamara, mispay, madfu, neoleap,
       // cjDropshipping, googleMerchant, ...) is admin-only, and only for this
       // store's admin. These hold provider credentials and cached tokens.

@@ -17,6 +17,7 @@ import {
   ExternalLink,
   Store,
   BellOff,
+  FileText,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -38,6 +39,7 @@ const menuItems = [
   { path: "/dashboard/customers", icon: Users, label: "العملاء" },
   { path: "/dashboard/messages", icon: MessageSquare, label: "الرسائل" },
   { path: "/dashboard/analytics", icon: BarChart3, label: "التقارير" },
+  { path: "/dashboard/legal", icon: FileText, label: "الصفحات القانونية" },
   { path: "/dashboard/settings", icon: Settings, label: "الإعدادات" },
 ];
 

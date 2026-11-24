@@ -1,111 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useLegalContent } from "../../hooks/useLegalContent";
 import "./Legal.css";
 
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface FAQCategory {
-  title: string;
-  items: FAQItem[];
-}
-
-const faqData: FAQCategory[] = [
-  {
-    title: "الطلبات والشراء",
-    items: [
-      {
-        question: "كيف أقوم بتقديم طلب شراء؟",
-        answer:
-          "اختر المنتج المطلوب، أضفه إلى سلة التسوق، ثم اتبع خطوات إتمام الطلب بإدخال عنوان الشحن واختيار طريقة الدفع. ستتلقى تأكيداً بالبريد الإلكتروني بعد إتمام الطلب.",
-      },
-      {
-        question: "هل يمكنني تعديل أو إلغاء طلبي بعد تقديمه؟",
-        answer:
-          "يمكنك تعديل أو إلغاء طلبك قبل شحنه. بعد الشحن، يمكنك رفض الاستلام أو طلب الإرجاع وفقاً لسياسة الإرجاع الخاصة بنا.",
-      },
-      {
-        question: "هل الأقمشة المعروضة أصلية؟",
-        answer:
-          "نعم، كل الأقمشة في متجرنا أصلية 100% ومستوردة من الوكلاء المعتمدين. نضمن لك جودة وأصالة كل منتج.",
-      },
-    ],
-  },
-  {
-    title: "الشحن والتوصيل",
-    items: [
-      {
-        question: "كم تستغرق مدة التوصيل؟",
-        answer:
-          "المدن الرئيسية (الرياض، جدة، الدمام): 2-4 أيام عمل. المدن الأخرى: 4-7 أيام عمل. المناطق النائية: 7-10 أيام عمل.",
-      },
-      {
-        question: "هل يوجد شحن مجاني؟",
-        answer:
-          "نعم! الشحن مجاني لجميع الطلبات بقيمة 200 ريال وأكثر. للطلبات أقل من 200 ريال، رسوم الشحن 25 ريال فقط.",
-      },
-      {
-        question: "كيف أتتبع شحنتي؟",
-        answer:
-          "بعد شحن طلبك، ستتلقى رقم تتبع عبر البريد الإلكتروني. يمكنك أيضاً متابعة حالة الطلب من حسابك على الموقع.",
-      },
-    ],
-  },
-  {
-    title: "الإرجاع والاستبدال",
-    items: [
-      {
-        question: "ما هي سياسة الإرجاع؟",
-        answer:
-          "يمكنك إرجاع المنتج خلال 7 أيام من الاستلام بشرط أن يكون في حالته الأصلية مع التغليف وجميع الملحقات. للتفاصيل الكاملة، راجع سياسة الإرجاع.",
-      },
-      {
-        question: "كيف أطلب إرجاع منتج؟",
-        answer:
-          "تواصل معنا عبر صفحة الاتصال مع ذكر رقم الطلب وسبب الإرجاع. سنراجع طلبك ونرد عليك خلال 24 ساعة بتعليمات الإرجاع.",
-      },
-      {
-        question: "متى أسترد المبلغ بعد الإرجاع؟",
-        answer:
-          "بعد استلام المنتج وفحصه: التحويل البنكي 5-14 يوم عمل، بطاقة الائتمان 7-21 يوم عمل، رصيد المتجر خلال 24 ساعة.",
-      },
-    ],
-  },
-  {
-    title: "الدفع",
-    items: [
-      {
-        question: "ما هي طرق الدفع المتاحة؟",
-        answer:
-          "نقبل الدفع عبر: التحويل البنكي، بطاقات الائتمان (فيزا، ماستركارد)، مدى، والدفع عند الاستلام (في مدن محددة).",
-      },
-      {
-        question: "هل الدفع الإلكتروني آمن؟",
-        answer:
-          "نعم، جميع عمليات الدفع مشفرة ومحمية ببروتوكول SSL. نحن لا نخزن بيانات بطاقتك على خوادمنا، بل تتم المعالجة عبر بوابات دفع معتمدة وآمنة.",
-      },
-    ],
-  },
-  {
-    title: "الضمان والصيانة",
-    items: [
-      {
-        question: "هل الأقمشة مشمولة بالضمان؟",
-        answer:
-          "نعم، كل الأقمشة الإلكترونية تأتي بضمان المصنع. مدة الضمان مذكورة في صفحة كل منتج. يغطي الضمان عيوب التصنيع فقط.",
-      },
-      {
-        question: "ماذا لا يغطيه الضمان؟",
-        answer:
-          "لا يغطي الضمان: الأضرار الناتجة عن سوء الاستخدام، أضرار الماء أو السقوط، التعديل أو الإصلاح من جهة غير معتمدة.",
-      },
-    ],
-  },
-];
-
+// الأسئلة والأجوبة يحررها الأدمن من لوحة التحكم (/dashboard/legal) وتُحفظ في
+// settings/legal.faq. القيم الافتراضية في src/data/legalContent.ts.
 const FAQ = () => {
+  const { faq } = useLegalContent();
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
 
   const toggleItem = (key: string) => {
@@ -123,16 +24,14 @@ const FAQ = () => {
   return (
     <div className="legal-page">
       <div className="legal-hero">
-        <h1>الأسئلة الشائعة</h1>
-        <p>إجابات لأهم الأسئلة المتعلقة بالتسوق من متجرنا</p>
+        <h1>{faq.title}</h1>
+        {faq.subtitle && <p>{faq.subtitle}</p>}
       </div>
 
       <div className="legal-content">
-        {faqData.map((category, catIdx) => (
-          <div key={catIdx} className="legal-section">
-            <h2>
-              {category.title}
-            </h2>
+        {faq.categories.map((category, catIdx) => (
+          <div key={category.id || catIdx} className="legal-section">
+            <h2>{category.title}</h2>
             <div className="faq-list">
               {category.items.map((item, itemIdx) => {
                 const key = `${catIdx}-${itemIdx}`;
@@ -142,6 +41,7 @@ const FAQ = () => {
                     <button
                       className={`faq-question ${isOpen ? "open" : ""}`}
                       onClick={() => toggleItem(key)}
+                      aria-expanded={isOpen}
                     >
                       <span>{item.question}</span>
                     </button>
@@ -153,21 +53,15 @@ const FAQ = () => {
           </div>
         ))}
 
-        <div className="legal-section">
-          <h2>
-            <></> لم تجد إجابة لسؤالك؟
-          </h2>
-          <p>
-            إذا لم تجد إجابة لسؤالك في القائمة أعلاه، لا تتردد في التواصل معنا.
-            فريق خدمة العملاء جاهز لمساعدتك.
-          </p>
-        </div>
-
-        <div className="legal-contact-box">
-          <h3>تحتاج مساعدة إضافية؟</h3>
-          <p>فريقنا متواجد للإجابة على جميع استفساراتك</p>
-          <Link to="/contact">تواصل معنا</Link>
-        </div>
+        {(faq.contactTitle || faq.contactButton) && (
+          <div className="legal-contact-box">
+            {faq.contactTitle && <h3>{faq.contactTitle}</h3>}
+            {faq.contactText && <p>{faq.contactText}</p>}
+            {faq.contactButton && (
+              <Link to="/contact">{faq.contactButton}</Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

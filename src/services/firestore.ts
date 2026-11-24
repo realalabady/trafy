@@ -661,3 +661,35 @@ export const updateOrderCJData = async (
     updatedAt: Timestamp.now(),
   });
 };
+
+// ==================== Legal Pages Content ====================
+// Public read, admin write: the storefront renders these documents, so the
+// doc must be readable by visitors (see the `settings/legal` rule in
+// firestore.rules — the catch-all `settings/{settingId}` rule is admin-only
+// read and would otherwise hide the pages from customers).
+
+import type { LegalContent } from "../data/legalContent";
+
+export const getLegalContent =
+  async (): Promise<Partial<LegalContent> | null> => {
+    const docRef = storeDoc("settings", "legal");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data() as Partial<LegalContent>;
+    }
+    return null;
+  };
+
+export const updateLegalContent = async (
+  content: Partial<LegalContent>,
+): Promise<void> => {
+  const docRef = storeDoc("settings", "legal");
+  await setDoc(
+    docRef,
+    {
+      ...content,
+      updatedAt: Timestamp.now(),
+    },
+    { merge: true },
+  );
+};

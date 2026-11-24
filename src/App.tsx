@@ -51,6 +51,7 @@ const Messages = lazy(() => import("./pages/Dashboard/Messages"));
 const CJProducts = lazy(() => import("./pages/Dashboard/CJProducts"));
 const CJOrders = lazy(() => import("./pages/Dashboard/CJOrders"));
 const CJSettings = lazy(() => import("./pages/Dashboard/CJSettings"));
+const LegalPages = lazy(() => import("./pages/Dashboard/LegalPages"));
 
 // Styles
 import "./styles/globals.css";
@@ -192,6 +193,7 @@ const App: React.FC = () => {
           <Route path="customers" element={<Customers />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="legal" element={<LegalPages />} />
           <Route path="messages" element={<Messages />} />
           <Route path="cj-products" element={<CJProducts />} />
           <Route path="cj-orders" element={<CJOrders />} />

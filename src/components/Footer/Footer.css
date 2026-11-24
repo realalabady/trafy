@@ -118,15 +118,51 @@
 }
 
 @media (max-width: 560px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 34px;
+  .footer-main {
+    padding-block: 44px 34px;
   }
 
+  /* الأعمدة جنباً إلى جنب على الجوال، لا مكدّسة */
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 14px;
+    row-gap: 30px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-wordmark {
+    font-size: 26px;
+  }
+
+  .footer-title {
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+
+  .footer-links,
+  .footer-contact {
+    gap: 9px;
+  }
+
+  .footer-links a,
+  .footer-contact a,
+  .footer-contact li {
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
 
   .footer-bottom-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-block: 18px;
+  }
+
+  .footer-bottom .meta {
+    font-size: 9px;
   }
 }
