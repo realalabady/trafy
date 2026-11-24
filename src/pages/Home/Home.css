@@ -141,10 +141,12 @@
 /* ============================================
    ٢. التصنيفات
    ============================================ */
+/* auto-fit يطوي المسارات الفارغة، فالصف يملأ العرض مهما كان عدد التصنيفات
+   في لوحة التحكم: أربعة أو ستة أو ثمانية. */
 .cat-row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(16px, 2.4vw, 34px);
 }
 
 .cat {
@@ -159,7 +161,6 @@
   position: relative;
   display: block;
   width: 100%;
-  max-width: 178px;
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
@@ -388,12 +389,8 @@
   }
 
   .cat-row > * {
-    flex: 0 0 116px;
+    flex: 0 0 150px;
     scroll-snap-align: start;
-  }
-
-  .cat-ring {
-    max-width: 116px;
   }
 
   .cat-label {
