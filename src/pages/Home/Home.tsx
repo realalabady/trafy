@@ -9,6 +9,9 @@ import "./Home.css";
 const SLIDES = [
   {
     image: "/images/brand-walk.jpg",
+    imageSquare: "/images/brand-walk.webp",
+    imageWide: "/images/brand-walk-wide.webp",
+    imageWideJpg: "/images/brand-walk-wide.jpg",
     position: "50% 38%",
     positionMobile: "50% 50%",
     alt: "ثوب بنّي من صوف شتوي",
@@ -16,6 +19,9 @@ const SLIDES = [
   },
   {
     image: "/images/brand-arch.jpg",
+    imageSquare: "/images/brand-arch.webp",
+    imageWide: "/images/brand-arch-wide.webp",
+    imageWideJpg: "/images/brand-arch-wide.jpg",
     position: "50% 40%",
     positionMobile: "50% 50%",
     alt: "ثوب عاجي أمام مشهد جبلي",
@@ -70,11 +76,9 @@ const Home: React.FC = () => {
       <section className="hero">
         <div className="hero-stage">
           <AnimatePresence mode="sync">
-            <motion.img
+            <motion.div
               key={current.image}
-              src={current.image}
-              alt={current.alt}
-              className="hero-img"
+              className="hero-layer"
               style={
                 {
                   "--pos": current.position,
@@ -85,7 +89,30 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0 : 1.2, ease }}
-            />
+            >
+              {/* المكتب يأخذ قصّة ٢:١ بدقّة ٢٤٠٠ بكسل، والجوال يبقى على
+                  المربّع الكامل. صورة واحدة لكلٍّ، لا تحميل مزدوج. */}
+              <picture>
+                <source
+                  media="(min-width: 981px)"
+                  type="image/webp"
+                  srcSet={current.imageWide}
+                />
+                <source
+                  media="(min-width: 981px)"
+                  type="image/jpeg"
+                  srcSet={current.imageWideJpg}
+                />
+                <source type="image/webp" srcSet={current.imageSquare} />
+                <img
+                  src={current.image}
+                  alt={current.alt}
+                  className="hero-img"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </picture>
+            </motion.div>
           </AnimatePresence>
           <div className="hero-scrim" />
 

@@ -12,7 +12,9 @@ import {
   Loader,
   Trash2,
   DollarSign,
+  FileText,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   subscribeToOrders,
   updateOrderStatusInFirestore,
@@ -385,13 +387,26 @@ const Orders: React.FC = () => {
                           </select>
                         </td>
                         <td>
-                          <button
-                            className="btn btn-sm btn-outline"
-                            onClick={() => setSelectedOrder(order)}
-                          >
-                            <Eye size={14} />
-                            عرض
-                          </button>
+                          <div className="order-row-actions">
+                            <button
+                              className="btn btn-sm btn-outline"
+                              onClick={() => setSelectedOrder(order)}
+                            >
+                              <Eye size={14} />
+                              عرض
+                            </button>
+                            {/* الفاتورة تُفتح في تبويب جديد حتى لا تفقد
+                                الإدارة موضعها في القائمة. */}
+                            <Link
+                              to={`/invoice/${order.id}`}
+                              className="btn btn-sm btn-outline"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <FileText size={14} />
+                              فاتورة
+                            </Link>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -643,6 +658,15 @@ const Orders: React.FC = () => {
               </div>
             </div>
             <div className="modal-footer">
+              <Link
+                to={`/invoice/${selectedOrder.id}`}
+                className="btn btn-outline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FileText size={16} />
+                عرض الفاتورة
+              </Link>
               <button
                 className="btn btn-outline"
                 style={{ color: "#ef4444", borderColor: "#ef4444" }}

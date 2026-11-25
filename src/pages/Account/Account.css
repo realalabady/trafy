@@ -86,6 +86,24 @@
   color: white;
 }
 
+.account-nav .nav-item.admin {
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 15px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.account-nav .nav-item.admin:hover {
+  background: var(--light);
+}
+
+.account-nav .nav-item.admin + .nav-item.logout {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 12px;
+}
+
 .account-nav .nav-item.logout {
   color: var(--danger);
   margin-top: 15px;
@@ -498,6 +516,12 @@
     white-space: nowrap;
   }
 
+  .account-nav .nav-item.admin {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 9px;
+  }
+
   .account-nav .nav-item.logout {
     margin-top: 0;
     border-top: none;
@@ -591,4 +615,30 @@
   background: #fee2e2;
   color: var(--danger);
   border-color: var(--danger);
+}
+
+/* ==================== رابط الفاتورة ==================== */
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.order-invoice-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  transition: border-color 180ms var(--ease), background-color 180ms var(--ease);
+}
+
+.order-invoice-link:hover {
+  border-color: var(--ink);
+  background: var(--ivory);
 }

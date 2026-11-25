@@ -49,6 +49,9 @@ const cjMenuItems = [
   { path: "/dashboard/cj-settings", icon: Settings, label: "إعدادات CJ" },
 ];
 
+// CJ Dropshipping is hidden from the sidebar; its routes still work by URL.
+const SHOW_CJ_SECTION = false;
+
 const DashboardLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -180,36 +183,40 @@ const DashboardLayout: React.FC = () => {
             ))}
           </ul>
 
-          {/* CJ Dropshipping Section */}
-          <div
-            className="sidebar-section-title"
-            style={{
-              padding: "12px 20px 6px",
-              fontSize: "11px",
-              fontWeight: 700,
-              color: "rgba(255,255,255,0.4)",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              marginTop: "8px",
-              borderTop: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            CJ Dropshipping
-          </div>
-          <ul>
-            {cjMenuItems.map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className={`nav-link ${isActive(item.path) ? "active" : ""}`}
-                  onClick={handleNavClick}
-                >
-                  <item.icon size={20} />
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {SHOW_CJ_SECTION && (
+            <>
+            {/* CJ Dropshipping Section */}
+            <div
+              className="sidebar-section-title"
+              style={{
+                padding: "12px 20px 6px",
+                fontSize: "11px",
+                fontWeight: 700,
+                color: "rgba(255,255,255,0.4)",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                marginTop: "8px",
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+              }}
+            >
+              CJ Dropshipping
+            </div>
+            <ul>
+              {cjMenuItems.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className={`nav-link ${isActive(item.path) ? "active" : ""}`}
+                    onClick={handleNavClick}
+                  >
+                    <item.icon size={20} />
+                    <span>{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            </>
+          )}
         </nav>
 
         <div className="sidebar-footer">

@@ -456,3 +456,11 @@
     justify-content: space-between;
   }
 }
+
+/* أزرار الصف: عرض + فاتورة جنباً إلى جنب */
+.order-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}

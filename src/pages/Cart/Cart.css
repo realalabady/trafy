@@ -129,28 +129,45 @@
 .item-quantity {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--light);
-  padding: 5px;
-  border-radius: 8px;
+  gap: 6px;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  padding: 4px;
+  border-radius: 10px;
 }
 
 .qty-btn {
   width: 32px;
   height: 32px;
-  border: none;
-  background: white;
-  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .qty-btn:hover {
   background: var(--primary);
-  color: white;
+  border-color: var(--primary);
+  color: var(--paper);
+}
+
+.qty-btn:active {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: var(--paper);
+}
+
+.qty-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .qty-value {
@@ -170,20 +187,24 @@
 .remove-btn {
   width: 40px;
   height: 40px;
-  border: none;
-  background: #fee2e2;
+  border: 1px solid rgba(122, 47, 37, 0.22);
+  background: rgba(122, 47, 37, 0.07);
   color: var(--danger);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .remove-btn:hover {
   background: var(--danger);
-  color: white;
+  border-color: var(--danger);
+  color: var(--paper);
 }
 
 .cart-actions {
@@ -195,14 +216,18 @@
   border-top: 1px solid var(--border);
 }
 
-.btn-danger {
+/* "إفراغ السلة" is an outline button: the global .btn-danger fills it
+   with --sale, which matched the text colour and hid the label. */
+.cart-actions .btn-danger {
+  background: transparent;
   border-color: var(--danger);
   color: var(--danger);
 }
 
-.btn-danger:hover {
+.cart-actions .btn-danger:hover {
   background: var(--danger);
-  color: white;
+  border-color: var(--danger);
+  color: var(--paper);
 }
 
 /* Cart Summary */

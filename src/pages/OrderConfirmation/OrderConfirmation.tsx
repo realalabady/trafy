@@ -86,7 +86,14 @@ const OrderConfirmation: React.FC = () => {
               )}
 
               <div className="confirmation-actions">
-                <Link to="/account" className="btn btn-primary">
+                {/* الفاتورة أولاً: هي ما يحتاجه العميل فور الدفع. */}
+                <Link
+                  to={`/invoice/${orderId}`}
+                  className="btn btn-primary"
+                >
+                  تحميل الفاتورة
+                </Link>
+                <Link to="/account" className="btn btn-outline">
                   عرض طلباتي
                 </Link>
                 <button

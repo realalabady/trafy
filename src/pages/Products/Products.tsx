@@ -6,7 +6,7 @@ import "./Products.css";
 
 const Products: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { products, categories, searchQuery } = useStore();
+  const { products, categories } = useStore();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
@@ -32,8 +32,12 @@ const Products: React.FC = () => {
     filteredProducts = filteredProducts.filter((p) => p.featured);
   }
 
-  // فلتر البحث
-  const activeSearch = searchParam || searchQuery;
+  // فلتر البحث: من رابط الصفحة وحده.
+  // كان يقرأ أيضاً searchQuery العام، وهو نص حقل البحث في الرأس ويبقى في
+  // الذاكرة بعد إغلاق طبقة البحث. فمن بحث عن "كوري" ثم فتح "كل الأقمشة"
+  // يرى ثلاثة أصناف فقط وعنوان الصفحة يقول "كل الأقمشة"، بلا أي إشارة
+  // إلى وجود فلتر. الفلتر الخفي أسوأ من غياب الفلتر.
+  const activeSearch = searchParam;
   if (activeSearch) {
     filteredProducts = filteredProducts.filter(
       (p) =>

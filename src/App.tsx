@@ -38,6 +38,7 @@ const Shipping = lazy(() => import("./pages/Legal/Shipping"));
 const Returns = lazy(() => import("./pages/Legal/Returns"));
 const FAQ = lazy(() => import("./pages/Legal/FAQ"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation/OrderConfirmation"));
+const InvoiceView = lazy(() => import("./pages/InvoiceView/InvoiceView"));
 
 // Dashboard Pages - Lazy Loaded
 const DashboardHome = lazy(() => import("./pages/Dashboard/DashboardHome"));
@@ -93,7 +94,8 @@ const StoreLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const App: React.FC = () => {
-  const { setUser, setProducts, setCategories, setStoreInfo } = useStore();
+  const { setUser, setProducts, setCategories, setStoreInfo, setBusinessInfo } =
+    useStore();
   const [loading, setLoading] = useState(true);
 
   // الاشتراك المركزي في المنتجات والتصنيفات وإعدادات المتجر
@@ -106,13 +108,14 @@ const App: React.FC = () => {
     );
     const unsubSettings = subscribeToSettings((settings) => {
       if (settings?.store) setStoreInfo(settings.store);
+      if (settings?.business) setBusinessInfo(settings.business);
     });
     return () => {
       unsubProducts();
       unsubCategories();
       unsubSettings();
     };
-  }, [setProducts, setCategories, setStoreInfo]);
+  }, [setProducts, setCategories, setStoreInfo, setBusinessInfo]);
 
   // الحفاظ على جلسة المستخدم عند تحديث الصفحة
   useEffect(() => {
@@ -226,6 +229,8 @@ const App: React.FC = () => {
             </StoreLayout>
           }
         />
+        {/* الفاتورة — بلا ترويسة ولا تذييل: المستند وحده هو ما يُطبع. */}
+        <Route path="/invoice/:orderId" element={<InvoiceView />} />
         <Route
           path="/products"
           element={

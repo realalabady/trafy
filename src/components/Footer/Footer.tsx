@@ -7,6 +7,9 @@ import "./Footer.css";
 const SERVICE =
   "شحن ٤ أيام عمل داخل المنطقة الشرقية و٧ أيام لباقي المملكة، ومجاني فوق ٢٥٠ ر.س. استرجاع خلال ٧ أيام على الطاقة غير المقصوصة.";
 
+// السجل التجاري — من businessInfo (الإعدادات)، وقيمه الافتراضية هي أرقام شهادة
+// وزارة التجارة في src/config/business.ts. مصدر واحد مع الفاتورة، فلا يختلف
+// التذييل عن المستند المطبوع.
 const FABRIC_LINKS = [
   { to: "/products?search=صوف", label: "الأصواف الشتوية" },
   { to: "/products?search=قطن", label: "القطن الصيفي" },
@@ -17,8 +20,11 @@ const FABRIC_LINKS = [
 ];
 
 const Footer: React.FC = () => {
-  const { storeInfo } = useStore();
+  const { storeInfo, businessInfo } = useStore();
   const storeName = storeInfo.storeName || "ترفي";
+  const crNumber = businessInfo.crNumber;
+  const crUnified = businessInfo.crUnifiedNumber;
+  const crVerifyUrl = businessInfo.crVerifyUrl;
 
   return (
     <footer className="footer band">
@@ -106,6 +112,49 @@ const Footer: React.FC = () => {
               </ul>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="footer-cr">
+        <div className="container footer-cr-inner">
+          <a
+            className="footer-cr-qr"
+            href={crVerifyUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`التحقق من السجل التجاري رقم ${crNumber} لدى المركز السعودي للأعمال`}
+          >
+            <img src="/images/cr-qr.svg" alt="" width={104} height={104} />
+          </a>
+
+          <div className="footer-cr-body">
+            <img
+              className="footer-cr-logo"
+              src="/images/sbc-logo.svg"
+              alt="المركز السعودي للتنافسية والأعمال"
+              width={247}
+              height={48}
+            />
+            <dl className="footer-cr-nums">
+              <div>
+                <dt>السجل التجاري</dt>
+                <dd>{crNumber}</dd>
+              </div>
+              <div>
+                <dt>الرقم الوطني الموحد</dt>
+                <dd>{crUnified}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <a
+            className="footer-cr-verify"
+            href={crVerifyUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            تحقّق من السجل لدى المركز السعودي للأعمال
+          </a>
         </div>
       </div>
 

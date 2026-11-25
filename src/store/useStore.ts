@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Product, CartItem, User, Category } from "../types";
+import { DEFAULT_BUSINESS_INFO } from "../config/business";
+import type { BusinessInfo } from "../config/business";
 
 export interface StoreInfo {
   storeName: string;
@@ -46,6 +48,10 @@ interface StoreState {
   // Store info / branding (من Firestore settings/store)
   storeInfo: StoreInfo;
   setStoreInfo: (info: Partial<StoreInfo>) => void;
+
+  // الهوية النظامية للفاتورة (من Firestore settings/store.business)
+  businessInfo: BusinessInfo;
+  setBusinessInfo: (info: Partial<BusinessInfo>) => void;
 
   // Wishlist (المفضلة)
   wishlist: string[];
@@ -162,6 +168,11 @@ export const useStore = create<StoreState>()(
       storeInfo: DEFAULT_STORE_INFO,
       setStoreInfo: (info) =>
         set((state) => ({ storeInfo: { ...state.storeInfo, ...info } })),
+
+      // Business / legal identity
+      businessInfo: DEFAULT_BUSINESS_INFO,
+      setBusinessInfo: (info) =>
+        set((state) => ({ businessInfo: { ...state.businessInfo, ...info } })),
 
       // Wishlist
       wishlist: [],

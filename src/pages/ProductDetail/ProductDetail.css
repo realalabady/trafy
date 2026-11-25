@@ -402,14 +402,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: var(--paper);
   border: none;
-  color: var(--dark);
-  transition: background 0.2s;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .quantity-selector button:hover:not(:disabled) {
-  background: var(--light);
+  background: var(--primary);
+  color: var(--paper);
+}
+
+.quantity-selector button:active:not(:disabled) {
+  background: var(--primary-dark);
+  color: var(--paper);
 }
 
 .quantity-selector button:disabled {
@@ -418,6 +427,11 @@
 }
 
 .quantity-selector span {
+  background: var(--ivory);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50px;
   text-align: center;
   font-weight: 700;

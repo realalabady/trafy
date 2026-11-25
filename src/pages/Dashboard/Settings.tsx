@@ -9,6 +9,8 @@ import {
   Loader,
   Clock,
   Mail,
+  FileText,
+  Upload,
 } from "lucide-react";
 import { useStore } from "../../store/useStore";
 import {
@@ -26,6 +28,12 @@ import {
 } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import type { StoreSettings } from "../../services/firestore";
+import { uploadImage } from "../../services/storage";
+import {
+  DEFAULT_BUSINESS_INFO,
+  isValidVatNumber,
+} from "../../config/business";
+import type { BusinessInfo } from "../../config/business";
 import "./Settings.css";
 
 const Settings: React.FC = () => {
@@ -41,6 +49,13 @@ const Settings: React.FC = () => {
     currency: "SAR",
     language: "ar",
   });
+
+  // الهوية النظامية — تُطبع على كل فاتورة، فالقيم الافتراضية هي أرقام الشهادة
+  // الحقيقية حتى لا يصدر مستند ناقص قبل أول حفظ.
+  const [businessSettings, setBusinessSettings] = useState<BusinessInfo>(
+    DEFAULT_BUSINESS_INFO,
+  );
+  const [logoUploading, setLogoUploading] = useState(false);
 
   const [shippingSettings, setShippingSettings] = useState({
     freeShippingThreshold: 200,
@@ -108,6 +123,11 @@ const Settings: React.FC = () => {
             setNotificationSettings(settings.notifications);
           if (settings.payment?.methods)
             setPaymentMethods(settings.payment.methods);
+          if (settings.business)
+            setBusinessSettings({
+              ...DEFAULT_BUSINESS_INFO,
+              ...settings.business,
+            });
         }
         // Email SMTP settings live in a separate admin-only doc.
         const email = await getEmailSettings();
@@ -120,6 +140,16 @@ const Settings: React.FC = () => {
   }, []);
 
   const handleSave = async () => {
+    // رقم ضريبي مكتوب خطأً يعني فاتورة ضريبية باطلة. نرفض الحفظ هنا، و
+    // buildInvoiceSnapshot يفحصه مرة ثانية قبل أي طباعة.
+    const vat = (businessSettings.vatNumber || "").trim();
+    if (vat && !isValidVatNumber(vat)) {
+      alert(
+        "الرقم الضريبي غير صحيح: يجب أن يكون 15 رقماً يبدأ بـ 3 وينتهي بـ 3. اتركه فارغاً إن لم يكن المتجر مسجّلاً في ضريبة القيمة المضافة.",
+      );
+      return;
+    }
+
     setLoading(true);
     try {
       const settingsData: StoreSettings = {
@@ -127,6 +157,7 @@ const Settings: React.FC = () => {
         shipping: shippingSettings,
         notifications: notificationSettings,
         payment: { methods: paymentMethods },
+        business: { ...businessSettings, vatNumber: vat },
       };
       await updateSettings(settingsData);
       alert("تم حفظ الإعدادات بنجاح");
@@ -135,6 +166,29 @@ const Settings: React.FC = () => {
       alert("حدث خطأ أثناء حفظ الإعدادات");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // شعار الفاتورة. storage.rules يسمح بالصور دون 5MB تحت stores/{id}/storefront.
+  const handleLogoUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("الشعار يجب أن يكون صورة (PNG أو SVG أو JPG).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert("حجم الشعار يجب أن يكون أقل من 5 ميجابايت.");
+      return;
+    }
+    setLogoUploading(true);
+    try {
+      const url = await uploadImage(file, "storefront");
+      setBusinessSettings((prev) => ({ ...prev, logoUrl: url }));
+      alert("تم رفع الشعار. اضغط «حفظ التغييرات» لتثبيته.");
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      alert("تعذّر رفع الشعار. حاول مرة أخرى.");
+    } finally {
+      setLogoUploading(false);
     }
   };
 
@@ -266,6 +320,7 @@ const Settings: React.FC = () => {
 
   const tabs = [
     { id: "store", label: "المتجر", icon: Store },
+    { id: "business", label: "الفاتورة والهوية النظامية", icon: FileText },
     { id: "shipping", label: "الشحن", icon: Truck },
     { id: "notifications", label: "الإشعارات", icon: Bell },
     { id: "payment", label: "الدفع", icon: CreditCard },
@@ -412,6 +467,277 @@ const Settings: React.FC = () => {
           )}
 
           {/* Shipping Settings */}
+          {/* Business / legal identity — يُطبع على الفواتير */}
+          {activeTab === "business" && (
+            <div className="settings-card">
+              <div className="card-header">
+                <FileText size={22} />
+                <h2>الفاتورة والهوية النظامية</h2>
+              </div>
+              <div className="settings-form">
+                <p className="settings-note">
+                  هذه البيانات تُطبع على كل فاتورة يحمّلها العميل. تأكّد من
+                  مطابقتها لشهادة السجل التجاري حرفاً بحرف.
+                </p>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>الاسم القانوني (عربي)</label>
+                    <input
+                      type="text"
+                      value={businessSettings.legalName}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          legalName: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>الاسم القانوني (إنجليزي)</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      value={businessSettings.legalNameEn}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          legalNameEn: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>رقم السجل التجاري</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      inputMode="numeric"
+                      value={businessSettings.crNumber}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          crNumber: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>الرقم الوطني الموحد</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      inputMode="numeric"
+                      value={businessSettings.crUnifiedNumber}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          crUnifiedNumber: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>رابط التحقق من السجل (المركز السعودي للأعمال)</label>
+                  <input
+                    type="url"
+                    dir="ltr"
+                    value={businessSettings.crVerifyUrl}
+                    onChange={(e) =>
+                      setBusinessSettings({
+                        ...businessSettings,
+                        crVerifyUrl: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>العنوان (عربي)</label>
+                    <input
+                      type="text"
+                      value={businessSettings.addressAr}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          addressAr: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>العنوان (إنجليزي)</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      value={businessSettings.addressEn}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          addressEn: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* ==================== ضريبة القيمة المضافة ==================== */}
+                <h3 className="settings-subhead">ضريبة القيمة المضافة</h3>
+                <p className="settings-note">
+                  اتركه فارغاً إن لم يكن المتجر مسجّلاً. عند تركه فارغاً تصدر
+                  الفاتورة بعنوان «فاتورة» بلا أي سطر ضريبة — وهذا هو الصحيح
+                  نظاماً، لأن إظهار ضريبة دون تسجيل مخالفة. عند إدخال رقم صحيح
+                  تتحول تلقائياً إلى «فاتورة ضريبية مبسطة».
+                </p>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>الرقم الضريبي (15 رقماً)</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      inputMode="numeric"
+                      placeholder="3XXXXXXXXXXXXX3"
+                      value={businessSettings.vatNumber}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          vatNumber: e.target.value,
+                        })
+                      }
+                    />
+                    {businessSettings.vatNumber.trim() !== "" && (
+                      <span
+                        className={
+                          isValidVatNumber(businessSettings.vatNumber)
+                            ? "settings-valid"
+                            : "settings-invalid"
+                        }
+                      >
+                        {isValidVatNumber(businessSettings.vatNumber)
+                          ? "رقم صحيح — ستصدر فواتير ضريبية مبسطة"
+                          : "غير صحيح: 15 رقماً يبدأ بـ 3 وينتهي بـ 3"}
+                      </span>
+                    )}
+                  </div>
+                  <div className="form-group">
+                    <label>نسبة الضريبة %</label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={businessSettings.vatRate}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          vatRate: Number(e.target.value) || 0,
+                        })
+                      }
+                    />
+                    <span className="settings-note">
+                      الأسعار المعروضة شاملة للضريبة نظاماً، فتُستخرج الضريبة من
+                      الإجمالي ولا تُضاف إليه — المبلغ المحصّل لا يتغيّر.
+                    </span>
+                  </div>
+                </div>
+
+                {/* ==================== شكل الفاتورة ==================== */}
+                <h3 className="settings-subhead">شكل الفاتورة</h3>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>بادئة رقم الفاتورة</label>
+                    <input
+                      type="text"
+                      dir="ltr"
+                      maxLength={6}
+                      value={businessSettings.invoicePrefix}
+                      onChange={(e) =>
+                        setBusinessSettings({
+                          ...businessSettings,
+                          invoicePrefix: e.target.value.toUpperCase(),
+                        })
+                      }
+                    />
+                    <span className="settings-note">
+                      مثال: {businessSettings.invoicePrefix || "INV"}-20261124-51932
+                    </span>
+                  </div>
+                  <div className="form-group">
+                    <label>شعار الفاتورة</label>
+                    <div className="settings-logo-row">
+                      {businessSettings.logoUrl ? (
+                        <img
+                          className="settings-logo-preview"
+                          src={businessSettings.logoUrl}
+                          alt="شعار المتجر"
+                        />
+                      ) : (
+                        <span className="settings-note">
+                          بلا شعار — تُطبع الفاتورة باسم المتجر بخط أميري.
+                        </span>
+                      )}
+                      <label className="btn btn-outline settings-upload">
+                        {logoUploading ? (
+                          <Loader className="spinner" size={16} />
+                        ) : (
+                          <Upload size={16} />
+                        )}
+                        {logoUploading ? "جاري الرفع…" : "رفع شعار"}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          disabled={logoUploading}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleLogoUpload(file);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                      {businessSettings.logoUrl && (
+                        <button
+                          type="button"
+                          className="btn btn-outline"
+                          onClick={() =>
+                            setBusinessSettings({
+                              ...businessSettings,
+                              logoUrl: "",
+                            })
+                          }
+                        >
+                          إزالة
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>ملاحظة تُطبع أسفل كل فاتورة (اختياري)</label>
+                  <textarea
+                    rows={2}
+                    value={businessSettings.invoiceNotes}
+                    onChange={(e) =>
+                      setBusinessSettings({
+                        ...businessSettings,
+                        invoiceNotes: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === "shipping" && (
             <div className="settings-card">
               <div className="card-header">

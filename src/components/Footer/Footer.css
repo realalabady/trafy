@@ -87,6 +87,93 @@
   color: var(--ink);
 }
 
+/* ---------- السجل التجاري ---------- */
+.footer-cr {
+  border-top: 1px solid var(--line);
+}
+
+.footer-cr-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  padding-block: 28px;
+}
+
+/* بلاطة فاتحة تحت الرمز: الماسح يحتاج تبايناً، لا أناقة فقط. */
+.footer-cr-qr {
+  flex: none;
+  display: block;
+  padding: 9px;
+  border-radius: 10px;
+  background: #f6f1e6;
+  line-height: 0;
+  transition: transform 220ms var(--ease), box-shadow 220ms var(--ease);
+}
+
+.footer-cr-qr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.footer-cr-qr img {
+  display: block;
+  width: 104px;
+  height: 104px;
+  shape-rendering: crispEdges;
+}
+
+.footer-cr-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.footer-cr-logo {
+  width: auto;
+  height: 34px;
+  opacity: 0.92;
+}
+
+.footer-cr-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 34px;
+}
+
+.footer-cr-nums dt {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 4px;
+}
+
+.footer-cr-nums dd {
+  font-size: 15px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  direction: ltr;
+  text-align: right;
+}
+
+/* يُدفع إلى الطرف البعيد ليملأ الشريط عرضاً */
+.footer-cr-verify {
+  margin-inline-start: auto;
+  font-size: 13px;
+  color: var(--camel);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: color 180ms var(--ease);
+}
+
+.footer-cr-verify:hover {
+  color: var(--ink);
+}
+
 /* ---------- الشريط السفلي ---------- */
 .footer-bottom {
   border-top: 1px solid var(--line);
@@ -152,6 +239,48 @@
   .footer-contact li {
     font-size: 12.5px;
     line-height: 1.5;
+  }
+
+  .footer-cr-inner {
+    gap: 16px;
+    padding-block: 22px;
+  }
+
+  .footer-cr-qr {
+    padding: 7px;
+    border-radius: 8px;
+  }
+
+  .footer-cr-qr img {
+    width: 82px;
+    height: 82px;
+  }
+
+  .footer-cr-body {
+    gap: 11px;
+  }
+
+  .footer-cr-logo {
+    height: 26px;
+  }
+
+  .footer-cr-nums {
+    gap: 8px 20px;
+  }
+
+  .footer-cr-nums dt {
+    font-size: 9px;
+  }
+
+  .footer-cr-nums dd {
+    font-size: 13.5px;
+  }
+
+  /* على الجوال: الرمز والهوية في صف، والرابط سطر كامل تحته */
+  .footer-cr-verify {
+    margin-inline-start: 0;
+    width: 100%;
+    font-size: 12px;
   }
 
   .footer-bottom-content {

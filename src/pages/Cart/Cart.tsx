@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { useStore } from "../../store/useStore";
 import { getSettings } from "../../services/firestore";
 import "./Cart.css";
@@ -120,18 +121,22 @@ const Cart: React.FC = () => {
                 <div className="item-quantity">
                   <button
                     className="qty-btn"
+                    aria-label="إنقاص الكمية"
                     onClick={() =>
                       updateQuantity(item.product.id, item.quantity - 1, item.selectedVariants)
                     }
                   >
+                    <Minus size={16} aria-hidden="true" />
                   </button>
                   <span className="qty-value">{item.quantity}</span>
                   <button
                     className="qty-btn"
+                    aria-label="زيادة الكمية"
                     onClick={() =>
                       updateQuantity(item.product.id, item.quantity + 1, item.selectedVariants)
                     }
                   >
+                    <Plus size={16} aria-hidden="true" />
                   </button>
                 </div>
                 <div className="item-price">
@@ -139,8 +144,10 @@ const Cart: React.FC = () => {
                 </div>
                 <button
                   className="remove-btn"
+                  aria-label="حذف المنتج من السلة"
                   onClick={() => removeFromCart(item.product.id, item.selectedVariants)}
                 >
+                  <Trash2 size={18} aria-hidden="true" />
                 </button>
               </div>
             ))}

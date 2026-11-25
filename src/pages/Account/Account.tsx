@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { updateDoc } from "firebase/firestore";
@@ -18,7 +18,8 @@ interface AccountProps {
 const Account: React.FC<AccountProps> = ({ initialTab }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, setUser, wishlist, toggleWishlist, products } = useStore();
+  const { user, setUser, wishlist, toggleWishlist, products, isAdmin } =
+    useStore();
   const [activeTab, setActiveTab] = useState(() => {
     if (initialTab) return initialTab;
     return location.pathname === "/wishlist" ? "wishlist" : "profile";
@@ -208,6 +209,14 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                 >
                   <span>المفضلة</span>
                 </button>
+                {isAdmin() && (
+                  <button
+                    className="nav-item admin"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    <span>لوحة التحكم</span>
+                  </button>
+                )}
                 <button className="nav-item logout" onClick={handleLogout}>
                   <span>تسجيل الخروج</span>
                 </button>
@@ -475,6 +484,16 @@ const Account: React.FC<AccountProps> = ({ initialTab }) => {
                                 <span>الإجمالي:</span>
                                 <strong>{formatPrice(order.total)}</strong>
                               </div>
+                            </div>
+                            {/* الفاتورة متاحة لكل طلب قديم أيضاً: الرقم يُشتق
+                                من تاريخ الإنشاء إن لم يكن مثبّتاً. */}
+                            <div className="order-actions">
+                              <Link
+                                to={`/invoice/${order.id}`}
+                                className="order-invoice-link"
+                              >
+                                الفاتورة
+                              </Link>
                             </div>
                           </div>
                         );

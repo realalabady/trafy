@@ -14,6 +14,9 @@ import {
 } from "firebase/firestore";
 import { storeCol, storeDoc, STORE_ID } from "../config/store";
 import type { Product, Category } from "../types";
+import { useStore } from "../store/useStore";
+import { buildInvoiceSnapshot } from "../utils/invoice";
+import type { BusinessInfo } from "../config/business";
 
 // كل المسارات هنا مقيّدة بمتجر واحد (stores/{STORE_ID}/...) عبر storeCol/storeDoc.
 // لا تستخدم collection(db, "...") مباشرة: المسارات العامة مشتركة بين كل المتاجر
@@ -199,6 +202,15 @@ export interface FirestoreOrder {
     nationalAddress?: string;
   };
   notes?: string;
+  // ==================== لقطة الفاتورة ====================
+  // تُثبَّت لحظة إنشاء الطلب ولا تُحدَّث بعدها: الفاتورة سجل تاريخي، فلا يصح أن
+  // يتغيّر رقمها أو ضريبتها لأن أحداً عدّل إعدادات المتجر بعد البيع.
+  // تاريخ الإصدار هو createdAt نفسه، فلا حقل منفصل له.
+  invoiceNumber?: string;
+  invoiceCrNumber?: string;
+  invoiceVatNumber?: string;
+  invoiceVatRate?: number;
+  invoiceVatAmount?: number;
   // حقول CJ Dropshipping
   isCJOrder?: boolean;
   cjOrderId?: string;
@@ -226,10 +238,23 @@ export const getOrders = async (): Promise<FirestoreOrder[]> => {
 export const addOrder = async (
   order: Omit<FirestoreOrder, "id">,
 ): Promise<string> => {
+  // طابع زمني واحد للثلاثة: لو استُدعيت Timestamp.now() مرتين لجاز أن تقعا على
+  // جانبي حدّ الثانية، فيخالف الرقم المسلسل تاريخ الإنشاء المشتق منه.
+  const now = Timestamp.now();
+
+  // لقطة الفاتورة تُبنى هنا لأن addOrder هي المعبر الوحيد لكل طرق الدفع — نقداً
+  // وتحويلاً وبطاقةً وتمارا وتابي — فلا يمكن أن ينساها أحد الفروع.
+  const invoice = buildInvoiceSnapshot(
+    useStore.getState().businessInfo,
+    Number(order.total) || 0,
+    now.toDate(),
+  );
+
   const docRef = await addDoc(ordersCollection, {
     ...order,
-    createdAt: Timestamp.now(),
-    updatedAt: Timestamp.now(),
+    ...invoice,
+    createdAt: now,
+    updatedAt: now,
   });
   return docRef.id;
 };
@@ -476,6 +501,9 @@ export interface StoreSettings {
   payment?: {
     methods: { id: string; name: string; enabled: boolean }[];
   };
+  // الهوية النظامية والفاتورة. الاسم "business" لا "legal": مستند
+  // settings/legal مأخوذ أصلاً لنصوص الصفحات النظامية (الشحن، الاسترجاع...).
+  business?: Partial<BusinessInfo>;
   updatedAt?: Date;
 }
 

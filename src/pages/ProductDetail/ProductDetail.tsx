@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Minus, Plus } from "lucide-react";
 import { useStore } from "../../store/useStore";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductDetail.css";
@@ -292,17 +293,21 @@ const ProductDetail: React.FC = () => {
             <div className="purchase-section">
               <div className="quantity-selector">
                 <button
+                  aria-label="إنقاص الكمية"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  disabled={product.stock === 0}
+                  disabled={product.stock === 0 || quantity <= 1}
                 >
+                  <Minus size={18} aria-hidden="true" />
                 </button>
                 <span>{quantity}</span>
                 <button
+                  aria-label="زيادة الكمية"
                   onClick={() =>
                     setQuantity(Math.min(product.stock, quantity + 1))
                   }
-                  disabled={product.stock === 0}
+                  disabled={product.stock === 0 || quantity >= product.stock}
                 >
+                  <Plus size={18} aria-hidden="true" />
                 </button>
               </div>
 
