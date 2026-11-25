@@ -146,7 +146,9 @@ const Invoice: React.FC<InvoiceProps> = ({ order, business, storeInfo }) => {
             {business.addressAr || storeInfo.storeAddress}
           </p>
           {storeInfo.storePhone && (
-            <p className="invoice-party-line price">{storeInfo.storePhone}</p>
+            <p className="invoice-party-line price">
+              <bdi dir="ltr">{storeInfo.storePhone}</bdi>
+            </p>
           )}
           {storeInfo.storeEmail && (
             <p className="invoice-party-line">{storeInfo.storeEmail}</p>

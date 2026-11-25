@@ -54,7 +54,11 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <h3>اتصل بنا</h3>
-                <p>{storeInfo.storePhone || "غير متوفر"}</p>
+                <p>
+                  <bdi dir="ltr">
+                    {storeInfo.storePhone || "غير متوفر"}
+                  </bdi>
+                </p>
                 <span>متاح 24/7</span>
               </div>
             </div>

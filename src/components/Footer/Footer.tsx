@@ -97,8 +97,11 @@ const Footer: React.FC = () => {
                 <li>{storeInfo.storeAddress || "المملكة العربية السعودية"}</li>
                 {storeInfo.storePhone && (
                   <li>
-                    <a href={`tel:${storeInfo.storePhone}`}>
-                      {storeInfo.storePhone}
+                    <a
+                      href={`tel:${storeInfo.storePhone.replace(/\s+/g, "")}`}
+                      dir="ltr"
+                    >
+                      <bdi dir="ltr">{storeInfo.storePhone}</bdi>
                     </a>
                   </li>
                 )}
